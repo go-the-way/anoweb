@@ -1,0 +1,21 @@
+server:
+  host: localhost
+  port: 9494
+  tls:
+    enable: false
+    cert_file: ''
+    key_file: ''
+  max_header_size: 102400
+  read_timeout: 1m
+  read_header_timeout: 1m1s
+  write_timeout: 2m
+  idle_timeout: 1s
+banner:
+  enable: true
+  type: default
+  text: ''
+  file: ''
+template:
+  cache: true
+  root: templates
+  suffix: .html
