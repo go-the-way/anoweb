@@ -25,7 +25,6 @@ The lightweight and powerful web framework using the new way for Go. Another go 
 [![Go Report Card](https://goreportcard.com/badge/github.com/go-the-way/anoweb)](https://goreportcard.com/report/github.com/go-the-way/anoweb)
 [![GoDoc](https://pkg.go.dev/badge/github.com/go-the-way/anoweb?status.svg)](https://pkg.go.dev/github.com/go-the-way/anoweb?tab=doc)
 [![Release](https://img.shields.io/github/release/go-the-way/anoweb.svg?style=flat-square)](https://github.com/go-the-way/anoweb/releases)
-[![License](https://img.shields.io/github/license/go-the-way/anoweb)](https://raw.githubusercontent.com/go-the-way/anoweb/main/LICENSE)
 
 ## Overview
 
