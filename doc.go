@@ -32,7 +32,7 @@ import (
 )
 
 func main() {
-	anoweb.DefaultApp.Get("/", func(ctx *context.Context) {
+	anoweb.Default.Get("/", func(ctx *context.Context) {
 		ctx.Text("Hello world")
 	}).Run()
 }
