@@ -38,7 +38,7 @@ type App struct {
 	defaultMWState *defaultMWState
 }
 
-var DefaultApp = New()
+var Default = New()
 
 // New return new App
 func New() *App {
