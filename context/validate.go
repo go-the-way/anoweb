@@ -11,31 +11,31 @@
 
 package context
 
-//import v "github.com/billcoding/govtr"
-//
-//func (ctx *Context) Validate(structPtr interface{}, call func()) {
-//	ctx.ValidateWithParams(structPtr, "message", "Parameters is invalid", "code", 500, call)
-//}
-//
-//func (ctx *Context) ValidateWithParams(structPtr interface{}, messageName, message, codeName string, code int, call func()) {
-//	result := v.New(structPtr).Validate()
-//	if result.Passed {
-//		call()
-//	} else {
-//		msg := result.Messages()
-//		if msg == "" {
-//			msg = message
-//		}
-//		ctx.JSON(map[string]interface{}{messageName: msg, codeName: code})
-//	}
-//}
-//
-//func (ctx *Context) BindAndValidate(structPtr interface{}, call func()) {
-//	ctx.Bind(structPtr)
-//	ctx.Validate(structPtr, call)
-//}
-//
-//func (ctx *Context) BindAndValidateWithParams(structPtr interface{}, messageName, message, codeName string, code int, call func()) {
-//	ctx.Bind(structPtr)
-//	ctx.ValidateWithParams(structPtr, messageName, message, codeName, code, call)
-//}
+import v "github.com/go-the-way/validator"
+
+func (ctx *Context) Validate(structPtr interface{}, call func()) {
+	ctx.ValidateWithParams(structPtr, "message", "Parameters is invalid", "code", 500, call)
+}
+
+func (ctx *Context) ValidateWithParams(structPtr interface{}, messageName, message, codeName string, code int, call func()) {
+	result := v.New(structPtr).Validate()
+	if result.Passed {
+		call()
+	} else {
+		msg := result.Messages()
+		if msg == "" {
+			msg = message
+		}
+		ctx.JSON(map[string]interface{}{messageName: msg, codeName: code})
+	}
+}
+
+func (ctx *Context) BindAndValidate(structPtr interface{}, call func()) {
+	ctx.Bind(structPtr)
+	ctx.Validate(structPtr, call)
+}
+
+func (ctx *Context) BindAndValidateWithParams(structPtr interface{}, messageName, message, codeName string, code int, call func()) {
+	ctx.Bind(structPtr)
+	ctx.ValidateWithParams(structPtr, messageName, message, codeName, code, call)
+}
