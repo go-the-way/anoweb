@@ -13,6 +13,7 @@ package captcha
 
 import (
 	"bytes"
+	_ "embed"
 	"math/rand"
 
 	"github.com/golang/freetype/truetype"
@@ -54,11 +55,11 @@ func imgText(width, height int, text string) []byte {
 }
 
 func writeText(dc *gg.Context, text string, x, y float64) {
-	xfload := 5 - rand.Float64()*10 + x
-	yfload := 5 - rand.Float64()*10 + y
+	xFloat := 5 - rand.Float64()*10 + x
+	yFloat := 5 - rand.Float64()*10 + y
 	radians := 40 - rand.Float64()*80
 	dc.RotateAbout(gg.Radians(radians), x, y)
-	dc.DrawStringAnchored(text, xfload, yfload, 0.2, 0.5)
+	dc.DrawStringAnchored(text, xFloat, yFloat, 0.2, 0.5)
 	dc.RotateAbout(-1*gg.Radians(radians), x, y)
 	dc.Stroke()
 }
@@ -89,11 +90,13 @@ func getRandColorRange(miniColor, maxColor int) (r, g, b, a int) {
 	return r, g, b, a
 }
 
-// 加载字体
+//go:embed fonts/JetBrainsMono-Regular.ttf
+var ttf []byte
+
 func loadFontFace(points float64) font.Face {
 	// 这里是将字体TTF文件转换成了 byte 数据保存成了一个 go 文件 文件较大可以到附录下
 	// 通过truetype.Parse可以将 byte 类型的数据转换成TTF字体类型
-	f, err := truetype.Parse(COMICSAN)
+	f, err := truetype.Parse(ttf)
 	if err != nil {
 		panic(err)
 	}
