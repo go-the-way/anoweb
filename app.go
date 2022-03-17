@@ -38,6 +38,7 @@ type App struct {
 	defaultMWState *defaultMWState
 }
 
+// Default the default App
 var Default = New()
 
 // New return new App

@@ -28,6 +28,7 @@ type captcha struct {
 	Generator  Generator
 }
 
+// Captcha return new captcha Middleware
 func Captcha() *captcha {
 	return &captcha{
 		SessionKey: "captcha",

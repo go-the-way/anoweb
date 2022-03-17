@@ -20,9 +20,11 @@ import (
 )
 
 type (
-	SimpleM  = map[string]*Simple
+	// SimpleM type define map[string]*Simple
+	SimpleM = map[string]*Simple
+	// DynamicM type define map[string]*Simple
 	DynamicM = map[string]map[string]*Dynamic
-	// ParsedRouter struct
+	// ParsedRouter defines parsed router
 	ParsedRouter struct {
 		// Simples routers
 		Simples SimpleM
@@ -47,9 +49,8 @@ func (pr *ParsedRouter) simple(ctx *context.Context) func(ctx *context.Context) 
 	routeKey := fmt.Sprintf("%s:%s", ctx.Request.Method, util.ReBuildPath(ctx.Request.URL.Path))
 	if simple, have := pr.Simples[routeKey]; have {
 		return simple.Handler
-	} else {
-		return nil
 	}
+	return nil
 }
 
 func (pr *ParsedRouter) dynamic(ctx *context.Context) func(ctx *context.Context) {

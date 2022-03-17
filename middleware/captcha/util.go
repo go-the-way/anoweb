@@ -18,6 +18,7 @@ import (
 	"github.com/go-the-way/anoweb/middleware"
 )
 
+// Current return current session captcha text
 func Current(cc *captcha, ctx *context.Context) (str string) {
 	if s := middleware.GetSession(ctx); s != nil {
 		if ss := s.Get(cc.SessionKey); ss != nil {
@@ -29,6 +30,7 @@ func Current(cc *captcha, ctx *context.Context) (str string) {
 	return ""
 }
 
+// Equals return true if current session captcha text equals val
 func Equals(cc *captcha, ctx *context.Context, val string, ignoreCase bool) bool {
 	current := Current(cc, ctx)
 	if current == "" {
@@ -40,10 +42,12 @@ func Equals(cc *captcha, ctx *context.Context, val string, ignoreCase bool) bool
 	return current == val || (ignoreCase && strings.EqualFold(current, val))
 }
 
+// Match return true if current session captcha text equals text in captcha
 func Match(cc *captcha, ctx *context.Context, ignoreCase bool) bool {
 	return Equals(cc, ctx, ctx.Param(cc.SessionKey), ignoreCase)
 }
 
+// Clear delete captcha text in current session
 func Clear(cc *captcha, ctx *context.Context) {
 	if s := middleware.GetSession(ctx); s != nil {
 		s.Del(cc.SessionKey)

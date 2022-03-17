@@ -13,10 +13,22 @@ package context
 
 import v "github.com/go-the-way/validator"
 
+// Validate validate structPtr, call func if the validator validation result is true.
 func (ctx *Context) Validate(structPtr interface{}, call func()) {
 	ctx.ValidateWithParams(structPtr, "message", "Parameters is invalid", "code", 500, call)
 }
 
+// ValidateWithParams first to validate structPtr, call func if the validator validation result is true.
+//
+// - override messageName
+//
+// - override message
+//
+// - override message
+//
+// - override codeName
+//
+// - override code
 func (ctx *Context) ValidateWithParams(structPtr interface{}, messageName, message, codeName string, code int, call func()) {
 	result := v.New(structPtr).Validate()
 	if result.Passed {
@@ -30,11 +42,23 @@ func (ctx *Context) ValidateWithParams(structPtr interface{}, messageName, messa
 	}
 }
 
+// BindAndValidate first bind structPtr from request body, then validate structPtr, call func if the validator validation result is true.
 func (ctx *Context) BindAndValidate(structPtr interface{}, call func()) {
 	ctx.Bind(structPtr)
 	ctx.Validate(structPtr, call)
 }
 
+// BindAndValidateWithParams first bind structPtr from request body, then validate structPtr, call func if the validator validation result is true.
+//
+// - override messageName
+//
+// - override message
+//
+// - override message
+//
+// - override codeName
+//
+// - override code
 func (ctx *Context) BindAndValidateWithParams(structPtr interface{}, messageName, message, codeName string, code int, call func()) {
 	ctx.Bind(structPtr)
 	ctx.ValidateWithParams(structPtr, messageName, message, codeName, code, call)

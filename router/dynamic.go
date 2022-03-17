@@ -11,6 +11,7 @@
 
 package router
 
+// Dynamic defines Dynamic router
 type Dynamic struct {
 	Params []string
 	*Simple

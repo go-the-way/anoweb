@@ -25,6 +25,7 @@ type deflate struct {
 	Level       int
 }
 
+// Deflate return new deflate Middleware
 func Deflate() *deflate {
 	return &deflate{
 		ContentType: []string{

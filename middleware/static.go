@@ -107,11 +107,10 @@ func (s *static) Handler() func(ctx *context.Context) {
 			if err != nil {
 				ctx.Chain()
 				return
-			} else {
-				buffer = bytes
-				if s.Cache {
-					s.Caches[urlPath] = buffer
-				}
+			}
+			buffer = bytes
+			if s.Cache {
+				s.Caches[urlPath] = buffer
 			}
 		}
 		ctx.Write(context.Builder().Data(buffer).ContentType(mimeType).Build())

@@ -15,6 +15,7 @@ import (
 	"math/rand"
 )
 
+// Generator defines generate interface
 type Generator interface {
 	generate(length int) string
 }

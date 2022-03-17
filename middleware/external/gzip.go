@@ -25,6 +25,7 @@ type gzip struct {
 	Level       int
 }
 
+// Gzip return new gzip middleware
 func Gzip() *gzip {
 	return &gzip{
 		ContentType: []string{
