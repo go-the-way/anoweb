@@ -13,6 +13,7 @@ package captcha
 
 import (
 	"bytes"
+	// import embed for read font ttf file
 	_ "embed"
 	"math/rand"
 
