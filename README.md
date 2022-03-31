@@ -43,7 +43,7 @@ The lightweight and powerful web framework using the new way for Go. Another go 
 - Pure native, no third dependencies
 - Basic & Variables & Group router
 - REST-ful controllers
-- Binding
+- Binding & validation
 - Middleware supports
 - Session supports
 - Rich Response supports
