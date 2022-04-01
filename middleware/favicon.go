@@ -30,9 +30,7 @@ func Favicon(file string, fs *embed.FS) *favicon {
 // Handler implements
 func (f *favicon) Handler() func(ctx *context.Context) {
 	return func(ctx *context.Context) {
-		if ctx.Request.URL.Path != "/favicon.ico" {
-			ctx.Chain()
-		} else if f.fs != nil {
+		if f.fs != nil {
 			ctx.ICOFSFile(f.fs, f.file)
 		} else {
 			ctx.ICOFile(f.file)

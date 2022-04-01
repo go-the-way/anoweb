@@ -52,7 +52,7 @@ func New() *App {
 		routers:        []*router.Router{router.NewRouter()},
 		parsedRouters:  &router.ParsedRouter{Simples: make(router.SimpleM), Dynamics: make(router.DynamicM)},
 		middlewares:    make([]middleware.Middleware, 6),
-		defaultMWState: &defaultMWState{header: true, faviconFile: "favicon.ico"},
+		defaultMWState: &defaultMWState{header: true, faviconFile: "favicon.ico", faviconRoute: "/favicon.ico"},
 	}
 }
 

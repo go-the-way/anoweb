@@ -39,9 +39,10 @@ type defaultMWState struct {
 	staticRoot   string
 	staticPrefix string
 
-	favicon     bool
-	faviconFile string
-	faviconFS   *embed.FS
+	favicon      bool
+	faviconRoute string
+	faviconFile  string
+	faviconFS    *embed.FS
 }
 
 // Use Middlewares
@@ -108,6 +109,12 @@ func (a *App) FaviconFile(file string) *App {
 	return a
 }
 
+// FaviconRoute Use Favicon File
+func (a *App) FaviconRoute(route string) *App {
+	a.defaultMWState.faviconRoute = route
+	return a
+}
+
 // FaviconFS Use Favicon FS
 func (a *App) FaviconFS(fs *embed.FS) *App {
 	a.defaultMWState.faviconFS = fs
@@ -138,6 +145,11 @@ func (a *App) useDefaultMWs() *App {
 
 	if a.defaultMWState.static {
 		a.middlewares = append(a.middlewares, middleware.Static(a.defaultMWState.staticCache, a.defaultMWState.staticRoot, a.defaultMWState.staticPrefix))
+	}
+
+	if a.defaultMWState.favicon {
+		favicon := middleware.Favicon(a.defaultMWState.faviconFile, a.defaultMWState.faviconFS)
+		a.Get(a.defaultMWState.faviconRoute, favicon.Handler())
 	}
 
 	return a

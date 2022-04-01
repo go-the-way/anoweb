@@ -137,6 +137,7 @@ func TestAppUses(t *testing.T) {
 			UseFavicon().
 			FaviconFile("a.ico").
 			FaviconFS(&fs2).
+			FaviconRoute("/favicon.ico").
 			useDefaultMWs()
 	}
 	{

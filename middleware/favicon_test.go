@@ -28,16 +28,6 @@ var fs embed.FS
 
 func TestFavicon(t *testing.T) {
 	{
-		req, _ := http.NewRequest(http.MethodGet, "/favicon.ico-haha", nil)
-		c := Favicon("testdata/a.ico", nil)
-		ctx := context.New(req, &config.Template{})
-		ctx.Add(c.Handler())
-		ctx.Chain()
-		r := ctx.Response
-		require.Equal(t, []byte("404 page not found"), r.Data)
-		require.Equal(t, mime.TEXT, r.ContentType)
-	}
-	{
 		req, _ := http.NewRequest(http.MethodGet, "/favicon.ico", nil)
 		c := Favicon("testdata/a.ico", nil)
 		ctx := context.New(req, &config.Template{})
