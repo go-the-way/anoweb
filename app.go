@@ -63,8 +63,8 @@ func (a *App) Run() {
 	a.printBanner()
 	a.printVendor()
 	a.routeRestControllers()
-	a.parseRouters()
 	a.useDefaultMWs()
+	a.parseRouters()
 	a.serve()
 }
 
