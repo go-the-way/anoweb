@@ -27,22 +27,36 @@ type MultipartFile struct {
 	FileHeader *multipart.FileHeader
 }
 
+// Open open source file in multiple
+func (file *MultipartFile) Open() (f multipart.File, err error) {
+	return file.FileHeader.Open()
+}
+
 // Copy source file in multiple
-func (file *MultipartFile) Copy(distName string) {
-	f, _ := file.FileHeader.Open()
-	var dist *os.File
-	dist, err := os.Create(distName)
-	if err != nil {
-		panic(err)
+func (file *MultipartFile) Copy(distName string) (err error) {
+	var (
+		f    multipart.File
+		dist *os.File
+	)
+	if f, err = file.Open(); err != nil {
+		return err
+	} else {
+		if dist, err = os.Create(distName); err != nil {
+			return err
+		} else {
+			_, _ = io.Copy(dist, f)
+			_ = f.Close()
+			_ = dist.Close()
+		}
 	}
-	_, _ = io.Copy(dist, f)
-	_ = f.Close()
-	_ = dist.Close()
+	return err
 }
 
 // ParseMultipart parse multiple Request
-func (ctx *Context) ParseMultipart(maxMemory int64) {
-	_ = ctx.Request.ParseMultipartForm(maxMemory)
+func (ctx *Context) ParseMultipart(maxMemory int64) error {
+	if err := ctx.Request.ParseMultipartForm(maxMemory); err != nil {
+		return err
+	}
 	paramMap := make(map[string][]string, 0)
 	if f := ctx.Request.MultipartForm; f != nil {
 		for name, values := range f.Value {
@@ -57,6 +71,7 @@ func (ctx *Context) ParseMultipart(maxMemory int64) {
 			ctx.MultipartMap[name] = mfs
 		}
 	}
+	return nil
 }
 
 // MultipartFile get multiple file

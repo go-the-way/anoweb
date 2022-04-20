@@ -45,30 +45,30 @@ func buildMultipartReq() *http.Request {
 
 func TestMultipartFileNil(t *testing.T) {
 	ctx := New(buildReq(""), &config.Template{})
-	ctx.ParseMultipart(0)
+	_ = ctx.ParseMultipart(0)
 	require.Nil(t, ctx.MultipartFile("file"))
 }
 
 func TestMultipartFileCopy(t *testing.T) {
 	ctx := New(buildMultipartReq(), &config.Template{})
-	ctx.ParseMultipart(0)
+	defer func() { _ = ctx.Request.MultipartForm.RemoveAll() }()
+	_ = ctx.ParseMultipart(0)
 	ff := ctx.MultipartFile("file")
-	ff.Copy("cp.txt")
+	_ = ff.Copy("cp.txt")
 	defer func() { _ = os.Remove("cp.txt") }()
 	bs, _ := ioutil.ReadFile("cp.txt")
 	require.Equal(t, []byte("hello"), bs)
 }
 
-func TestMultipartFileCopyCreatePanic(t *testing.T) {
-	defer func() {
-		if re := recover(); re != nil {
-			t.Log("test ok!")
-		}
-	}()
+func TestMultipartFileCopyErr(t *testing.T) {
 	ctx := New(buildMultipartReq(), &config.Template{})
-	ctx.ParseMultipart(0)
+	defer func() { _ = ctx.Request.MultipartForm.RemoveAll() }()
+	_ = ctx.ParseMultipart(0)
 	ff := ctx.MultipartFile("file")
-	ff.Copy("cp.txt/")
+	_ = ctx.Request.MultipartForm.RemoveAll()
+	if err := ff.Copy("cp.txt"); err == nil {
+		t.Error("test failed")
+	}
 }
 
 func TestParseMultipart(t *testing.T) {
@@ -76,7 +76,8 @@ func TestParseMultipart(t *testing.T) {
 	_ = ioutil.WriteFile(filename, []byte("hello"), 0700)
 	defer func() { _ = os.Remove(filename) }()
 	ctx := New(buildMultipartReq(), &config.Template{})
-	ctx.ParseMultipart(0)
+	defer func() { _ = ctx.Request.MultipartForm.RemoveAll() }()
+	_ = ctx.ParseMultipart(0)
 	ff := ctx.MultipartFile("file")
 	require.NotNil(t, ff)
 }
@@ -86,7 +87,8 @@ func TestMultipartFile(t *testing.T) {
 	_ = ioutil.WriteFile(filename, []byte("hello"), 0700)
 	defer func() { _ = os.Remove(filename) }()
 	ctx := New(buildMultipartReq(), &config.Template{})
-	ctx.ParseMultipart(0)
+	defer func() { _ = ctx.Request.MultipartForm.RemoveAll() }()
+	_ = ctx.ParseMultipart(0)
 	ff := ctx.MultipartFile("file")
 	require.NotNil(t, ff)
 }
@@ -96,7 +98,8 @@ func TestMultipartFiles(t *testing.T) {
 	_ = ioutil.WriteFile(filename, []byte("hello"), 0700)
 	defer func() { _ = os.Remove(filename) }()
 	ctx := New(buildMultipartReq(), &config.Template{})
-	ctx.ParseMultipart(0)
+	defer func() { _ = ctx.Request.MultipartForm.RemoveAll() }()
+	_ = ctx.ParseMultipart(0)
 	ff := ctx.MultipartFiles("file")
 	require.Equal(t, 1, len(ff))
 }
