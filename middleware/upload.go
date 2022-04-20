@@ -71,7 +71,7 @@ func (u *upload) Handler() func(ctx *context.Context) {
 			}
 		}
 		var err error
-		ctx.ParseMultipart(int64(u.Size))
+		_ = ctx.ParseMultipart(int64(u.Size))
 		files := ctx.MultipartFiles("file")
 		for _, file := range files {
 			err = verifyFile(file, u)
@@ -99,7 +99,7 @@ func (u *upload) Handler() func(ctx *context.Context) {
 				File: saveFile,
 				Url:  fileUrl,
 			})
-			file.Copy(saveFilePath)
+			_ = file.Copy(saveFilePath)
 			saveFiles = append(saveFiles, saveFilePath)
 		}
 
