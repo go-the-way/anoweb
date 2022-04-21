@@ -16,7 +16,7 @@ import (
 	"strings"
 )
 
-const version = "v1.0.7"
+const version = "v1.0.8"
 
 func (a *App) printVendor() {
 	_, _ = fmt.Println(strings.ReplaceAll(`
