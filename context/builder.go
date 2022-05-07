@@ -34,7 +34,7 @@ func Builder() *ResponseBuilder {
 
 // DefaultBuild Response
 func (r *ResponseBuilder) DefaultBuild() *Response {
-	return r.Header(http.Header{}).Cookies(make([]*http.Cookie, 0)).Status(http.StatusNotFound).Data([]byte("404 page not found")).ContentType(mime.TEXT).Build()
+	return r.Header(http.Header{}).Cookies(make([]*http.Cookie, 0)).Status(http.StatusOK).ContentType(mime.TEXT).Build()
 }
 
 // Data Response
