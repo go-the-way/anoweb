@@ -100,7 +100,6 @@ func TestStaticReadFile(t *testing.T) {
 	ctx.Chain()
 	r := ctx.Response
 	require.Equal(t, mime.TEXT, r.ContentType)
-	require.Equal(t, []byte("404 page not found"), r.Data)
 }
 
 func TestStaticAdd(t *testing.T) {

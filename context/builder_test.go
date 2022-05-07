@@ -33,10 +33,9 @@ func TestDefaultBuild(t *testing.T) {
 	rb := Builder()
 	r := rb.DefaultBuild()
 	require.Equal(t, r, &Response{
-		Data:        []byte("404 page not found"),
 		Header:      http.Header{},
 		Cookies:     make([]*http.Cookie, 0),
-		Status:      http.StatusNotFound,
+		Status:      http.StatusOK,
 		ContentType: mime.TEXT,
 	})
 }

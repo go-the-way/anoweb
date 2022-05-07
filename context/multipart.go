@@ -41,9 +41,8 @@ func (file *MultipartFile) Copy(distName string) (err error) {
 	if f, err = file.Open(); err != nil {
 		return err
 	} else {
-		if dist, err = os.Create(distName); err != nil {
-			return err
-		} else {
+		dist, _ = os.Create(distName)
+		if dist != nil {
 			_, _ = io.Copy(dist, f)
 			_ = f.Close()
 			_ = dist.Close()
