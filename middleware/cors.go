@@ -12,10 +12,9 @@
 package middleware
 
 import (
-	"net/http"
-
 	"github.com/go-the-way/anoweb/context"
 	"github.com/go-the-way/anoweb/headers"
+	"net/http"
 )
 
 type cors struct {
@@ -38,10 +37,10 @@ func Cors() *cors {
 // Handler implements
 func (cs *cors) Handler() func(ctx *context.Context) {
 	return func(ctx *context.Context) {
-		cs.Header.Set(headers.AccessControlAllowOrigin, cs.Origin)
-		cs.Header[headers.Allow] = cs.Methods
-		cs.Header[headers.AccessControlAllowHeaders] = cs.AllowHeaders
-		cs.Header[headers.AccessControlAllowMethods] = cs.Methods
+		ctx.Response.Header.Set(headers.AccessControlAllowOrigin, cs.Origin)
+		ctx.Response.Header[headers.Allow] = cs.Methods
+		ctx.Response.Header[headers.AccessControlAllowHeaders] = cs.AllowHeaders
+		ctx.Response.Header[headers.AccessControlAllowMethods] = cs.Methods
 		for k, v := range cs.Header {
 			for _, vv := range v {
 				ctx.Response.Header.Add(k, vv)
