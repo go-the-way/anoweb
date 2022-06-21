@@ -247,7 +247,8 @@ func TestAppOptions(t *testing.T) {
 func TestAppResource(t *testing.T) {
 	test := func(t *testing.T, pattern string, val, changeVal int) {
 		req, _ := http.NewRequest(http.MethodGet, pattern, nil)
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		testCase := &testRouterCase{New().Resource(pattern, "context/testdata/file.txt", mime.TEXT).parseRouters(), "", pattern, nil}
 		testCase.a.parsedRouters.Simples[fmt.Sprintf("%s:%s", http.MethodGet, pattern)].Handler(ctx)
 		r := ctx.Response
@@ -266,7 +267,8 @@ var fs embed.FS
 func TestAppFSResource(t *testing.T) {
 	test := func(t *testing.T, pattern string) {
 		req, _ := http.NewRequest(http.MethodGet, pattern, nil)
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		testCase := &testRouterCase{New().FSResource(&fs, pattern, "context/testdata/file.txt", mime.TEXT).parseRouters(), "", pattern, nil}
 		testCase.a.parsedRouters.Simples[fmt.Sprintf("%s:%s", http.MethodGet, pattern)].Handler(ctx)
 		r := ctx.Response

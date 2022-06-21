@@ -43,7 +43,8 @@ func TestDownload(t *testing.T) {
 			_ = os.RemoveAll(tDir)
 		}()
 		d := Download()
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		ctx.Add(d.Handler())
 		ctx.Chain()
 		r := ctx.Response
@@ -63,7 +64,8 @@ func TestDownload(t *testing.T) {
 		defer func() {
 			_ = os.Remove(tmpFile)
 		}()
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		ctx.Add(d.Handler())
 		ctx.Chain()
 		r := ctx.Response
@@ -76,7 +78,8 @@ func TestDownload(t *testing.T) {
 func TestDownloadParamEmpty(t *testing.T) {
 	req, _ := http.NewRequest(http.MethodGet, "/?file0=test-download.txt", nil)
 	d := Download()
-	ctx := context.New(req, &config.Template{})
+	ctx := context.New()
+	ctx.Allocate(req, &config.Template{})
 	ctx.Add(d.Handler())
 	ctx.Chain()
 	r := ctx.Response
@@ -87,7 +90,8 @@ func TestDownloadParamEmpty(t *testing.T) {
 func TestDownloadFileNotExists(t *testing.T) {
 	req, _ := http.NewRequest(http.MethodGet, "/?file=test-download.txt", nil)
 	d := Download()
-	ctx := context.New(req, &config.Template{})
+	ctx := context.New()
+	ctx.Allocate(req, &config.Template{})
 	ctx.Add(d.Handler())
 	ctx.Chain()
 	r := ctx.Response

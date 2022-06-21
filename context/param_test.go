@@ -30,30 +30,35 @@ func buildParamReqWithPS(ps string) *http.Request {
 }
 
 func TestParamMap(t *testing.T) {
-	ctx := New(buildParamReq(), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildParamReq(), &config.Template{})
 	require.Equal(t, map[string][]string{"apple": {"100", "110"}, "orange": {"200"}, "pear": {"300"}}, ctx.ParamMap())
 }
 
 func TestParam(t *testing.T) {
-	ctx := New(buildParamReq(), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildParamReq(), &config.Template{})
 	require.Equal(t, "", ctx.Param("banana"))
 	require.Equal(t, "100", ctx.Param("apple"))
 }
 
 func TestParams(t *testing.T) {
-	ctx := New(buildParamReq(), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildParamReq(), &config.Template{})
 	require.Equal(t, []string{}, ctx.Params("banana", []string{}))
 	require.Equal(t, []string{"100", "110"}, ctx.Params("apple", nil))
 }
 
 func TestHasParam(t *testing.T) {
-	ctx := New(buildParamReq(), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildParamReq(), &config.Template{})
 	require.Equal(t, false, ctx.HasParam("banana"))
 	require.Equal(t, true, ctx.HasParam("apple"))
 }
 
 func TestIntParam(t *testing.T) {
-	ctx := New(buildParamReqWithPS("&banana=hello"), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildParamReqWithPS("&banana=hello"), &config.Template{})
 	require.Equal(t, 10, int(ctx.IntParam("banana", 10)))
 	require.Equal(t, 100, int(ctx.IntParam("apple", 0)))
 	require.Equal(t, 10, int(ctx.IntParam("banana", 10)))
@@ -61,7 +66,8 @@ func TestIntParam(t *testing.T) {
 }
 
 func TestFloatParam(t *testing.T) {
-	ctx := New(buildParamReqWithPS("&banana=hello"), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildParamReqWithPS("&banana=hello"), &config.Template{})
 	require.Equal(t, float64(10), ctx.FloatParam("banana", 10))
 	require.Equal(t, float64(100), ctx.FloatParam("apple", 0))
 	require.Equal(t, float64(10), ctx.FloatParam("banana", 10))
@@ -69,33 +75,38 @@ func TestFloatParam(t *testing.T) {
 }
 
 func TestSingleParamMap(t *testing.T) {
-	ctx := New(buildParamReq(), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildParamReq(), &config.Template{})
 	require.Equal(t, map[string]string{"apple": "100", "orange": "200", "pear": "300"}, ctx.SingleParamMap())
 	ctx.SetParamMap(map[string][]string{"apple": {}}, true)
 	require.Equal(t, map[string]string{"apple": ""}, ctx.SingleParamMap())
 }
 
 func TestJoinedParamMap(t *testing.T) {
-	ctx := New(buildParamReq(), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildParamReq(), &config.Template{})
 	require.Equal(t, map[string]string{"apple": "100|110", "orange": "200", "pear": "300"}, ctx.JoinedParamMap("|"))
 	ctx.SetParamMap(map[string][]string{"apple": {}}, true)
 	require.Equal(t, map[string]string{"apple": ""}, ctx.JoinedParamMap("|"))
 }
 
 func TestSetParamMap(t *testing.T) {
-	ctx := New(buildParamReq(), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildParamReq(), &config.Template{})
 	ctx.SetParamMap(map[string][]string{"apple": {"apple"}}, false)
 	require.Equal(t, "apple", ctx.ParamDefault("apple", "apple"))
 }
 
 func TestKey(t *testing.T) {
-	ctx := New(buildParamReq(), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildParamReq(), &config.Template{})
 	ctx.SetParamMap(map[string][]string{"RESTFUL_KEY": {"apple"}}, false)
 	require.Equal(t, "apple", ctx.Key())
 }
 
 func TestIntKey(t *testing.T) {
-	ctx := New(buildParamReq(), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildParamReq(), &config.Template{})
 	ctx.SetParamMap(map[string][]string{"RESTFUL_KEY": {"100"}}, false)
 	require.Equal(t, int64(100), ctx.IntKey())
 }
@@ -106,7 +117,8 @@ func TestIntKeyPanic(t *testing.T) {
 			t.Log("test ok!")
 		}
 	}()
-	ctx := New(buildParamReq(), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildParamReq(), &config.Template{})
 	ctx.SetParamMap(map[string][]string{"RESTFUL_KEY": {"hello"}}, false)
 	ctx.IntKey()
 }

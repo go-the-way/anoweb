@@ -24,7 +24,8 @@ func TestAddListeners(t *testing.T) {
 	AddListeners(&Listener{Created: func(ctx *Context) { apple++ }},
 		&Listener{Created: func(ctx *Context) { apple++ }},
 		&Listener{Created: func(ctx *Context) { apple++ }})
-	New(buildReq(""), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildReq(""), &config.Template{})
 	require.Equal(t, 3, apple)
 }
 
@@ -33,7 +34,8 @@ func TestListenerOnCreated(t *testing.T) {
 		var apple int
 		ClearListeners()
 		AddListeners(&Listener{Created: func(ctx *Context) { apple++ }})
-		ctx := New(buildReq(""), &config.Template{})
+		ctx := New()
+		ctx.Allocate(buildReq(""), &config.Template{})
 		ctx.onCreated()
 		ctx.onCreated()
 		ctx.onCreated()
@@ -43,10 +45,10 @@ func TestListenerOnCreated(t *testing.T) {
 		var apple int
 		ClearListeners()
 		AddListeners(&Listener{Created: func(ctx *Context) { apple++ }})
-		New(buildReq(""), &config.Template{})
-		New(buildReq(""), &config.Template{})
-		New(buildReq(""), &config.Template{})
-		New(buildReq(""), &config.Template{})
+		New()
+		New()
+		New()
+		New()
 		require.Equal(t, 4, apple)
 	}
 }
@@ -56,7 +58,8 @@ func TestListenerOnDestroyed(t *testing.T) {
 		var apple int
 		ClearListeners()
 		AddListeners(&Listener{Destroyed: func(ctx *Context) { apple++ }})
-		ctx := New(buildReq(""), &config.Template{})
+		ctx := New()
+		ctx.Allocate(buildReq(""), &config.Template{})
 		ctx.onDestroyed()
 		ctx.onDestroyed()
 		ctx.onDestroyed()
@@ -66,7 +69,8 @@ func TestListenerOnDestroyed(t *testing.T) {
 		var apple int
 		ClearListeners()
 		AddListeners(&Listener{Destroyed: func(ctx *Context) { apple++ }})
-		ctx := New(buildReq(""), &config.Template{})
+		ctx := New()
+		ctx.Allocate(buildReq(""), &config.Template{})
 		ctx.Add(func(ctx *Context) { ctx.Chain() })
 		ctx.Add(func(ctx *Context) { ctx.Chain() })
 		ctx.Add(func(ctx *Context) { ctx.Chain() })

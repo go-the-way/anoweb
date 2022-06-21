@@ -35,7 +35,8 @@ func TestRecovery(t *testing.T) {
 		}()
 		ctx.Chain()
 	})
-	ctx := context.New(req, &config.Template{})
+	ctx := context.New()
+	ctx.Allocate(req, &config.Template{})
 	ctx.Add(r.Handler())
 	ctx.Add(func(ctx *context.Context) { panic(`try panic`) })
 	ctx.Chain()
@@ -47,19 +48,22 @@ func TestRecoveryDefault(t *testing.T) {
 	req, _ := http.NewRequest(http.MethodGet, "/", nil)
 	r := Recovery()
 	{
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		ctx.Add(r.Handler())
 		ctx.Add(func(ctx *context.Context) { panic(`try panic`) })
 		ctx.Chain()
 	}
 	{
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		ctx.Add(r.Handler())
 		ctx.Add(func(ctx *context.Context) { panic(errors.New(`try panic`)) })
 		ctx.Chain()
 	}
 	{
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		ctx.Add(r.Handler())
 		ctx.Add(func(ctx *context.Context) { panic(100) })
 		ctx.Chain()

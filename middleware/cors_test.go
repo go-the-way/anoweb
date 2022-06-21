@@ -28,7 +28,8 @@ func TestCors(t *testing.T) {
 	req3, _ := http.NewRequest(http.MethodHead, "", nil)
 	for _, req := range []*http.Request{req1, req2, req3} {
 		c := Cors()
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		ctx.Add(c.Handler())
 		ctx.Chain()
 		r := ctx.Response

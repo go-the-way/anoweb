@@ -22,12 +22,14 @@ import (
 
 func TestWrite(t *testing.T) {
 	{
-		ctx := New(buildReq(""), nil)
+		ctx := New()
+		ctx.Allocate(buildReq(""), nil)
 		ctx.Write(&Response{})
 		require.Equal(t, Builder().DefaultBuild(), ctx.Response)
 	}
 	{
-		ctx := New(buildReq(""), nil)
+		ctx := New()
+		ctx.Allocate(buildReq(""), nil)
 		ctx.Write(&Response{
 			Data:        []byte(`hello`),
 			Header:      http.Header{"apple": {"100"}},

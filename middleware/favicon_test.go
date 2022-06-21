@@ -30,7 +30,8 @@ func TestFavicon(t *testing.T) {
 	{
 		req, _ := http.NewRequest(http.MethodGet, "/favicon.ico", nil)
 		c := Favicon("testdata/a.ico", nil)
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		ctx.Add(c.Handler())
 		ctx.Chain()
 		r := ctx.Response
@@ -40,7 +41,8 @@ func TestFavicon(t *testing.T) {
 	{
 		req, _ := http.NewRequest(http.MethodGet, "/favicon.ico", nil)
 		c := Favicon("testdata/a.ico", &fs)
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		ctx.Add(c.Handler())
 		ctx.Chain()
 		r := ctx.Response

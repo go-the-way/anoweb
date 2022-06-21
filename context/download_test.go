@@ -27,7 +27,8 @@ import (
 func TestDownload(t *testing.T) {
 	_ = ioutil.WriteFile("file.txt", []byte(`hello world`), 0700)
 	defer func() { _ = os.Remove("file.txt") }()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.Download("file.txt", "file")
 	r := ctx.Response
 	require.Equal(t, Builder().Data([]byte(`hello world`)).Cookies([]*http.Cookie{}).ContentType(mime.BINARY).Header(http.Header{
@@ -41,6 +42,7 @@ func TestDownloadPanic(t *testing.T) {
 			t.Log("test ok!")
 		}
 	}()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.Download("file.txt", "file")
 }

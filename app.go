@@ -12,17 +12,19 @@
 package anoweb
 
 import (
-	"crypto/tls"
 	"fmt"
+	"github.com/go-the-way/anoweb/config"
+	"github.com/go-the-way/anoweb/context"
+	"github.com/go-the-way/anoweb/middleware"
+	"github.com/go-the-way/anoweb/rest"
+	"github.com/go-the-way/anoweb/router"
+	"golang.org/x/net/http2"
+	"golang.org/x/net/http2/h2c"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
-
-	"github.com/go-the-way/anoweb/config"
-	"github.com/go-the-way/anoweb/middleware"
-	"github.com/go-the-way/anoweb/rest"
-	"github.com/go-the-way/anoweb/router"
+	"sync"
 )
 
 // App struct
@@ -36,6 +38,7 @@ type App struct {
 	parsedRouters  *router.ParsedRouter
 	middlewares    []middleware.Middleware
 	defaultMWState *defaultMWState
+	ctxPool        *sync.Pool
 }
 
 // Default the default App
@@ -53,7 +56,7 @@ func New() *App {
 		parsedRouters:  &router.ParsedRouter{Simples: make(router.SimpleM), Dynamics: make(router.DynamicM)},
 		middlewares:    make([]middleware.Middleware, 6),
 		defaultMWState: &defaultMWState{header: true, faviconFile: "favicon.ico", faviconRoute: "/favicon.ico"},
-	}
+		ctxPool:        &sync.Pool{New: func() interface{} { return context.New() }}}
 }
 
 // Run App
@@ -73,23 +76,15 @@ func (a *App) serve() {
 	port := a.Config.Server.Port
 	tlsEnable := a.Config.Server.TLS.Enable
 	addr := host + ":" + strconv.Itoa(port)
-	server := &http.Server{
-		Addr:              addr,
-		Handler:           a.newDispatcher(),
-		MaxHeaderBytes:    a.Config.Server.MaxHeaderSize,
-		ReadTimeout:       a.Config.Server.ReadTimeout,
-		ReadHeaderTimeout: a.Config.Server.ReadHeaderTimeout,
-		WriteTimeout:      a.Config.Server.WriteTimeout,
-		IdleTimeout:       a.Config.Server.IdleTimeout,
-	}
+	server := &http2.Server{}
+	handler := h2c.NewHandler(a.newDispatcher(), server)
 	if tlsEnable {
-		server.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 		certFile := a.Config.Server.TLS.CertFile
 		keyFile := a.Config.Server.TLS.KeyFile
 		a.logger.Printf("Server started on https://%s\n", addr)
-		_, _ = fmt.Fprintln(os.Stderr, server.ListenAndServeTLS(certFile, keyFile))
+		_, _ = fmt.Fprintln(os.Stderr, http.ListenAndServeTLS(addr, certFile, keyFile, handler))
 	} else {
 		a.logger.Printf("Server started on http://%s\n", addr)
-		_, _ = fmt.Fprintln(os.Stderr, server.ListenAndServe())
+		_, _ = fmt.Fprintln(os.Stderr, http.ListenAndServe(addr, handler))
 	}
 }

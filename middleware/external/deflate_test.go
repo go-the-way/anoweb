@@ -37,7 +37,8 @@ func TestDeflate(t *testing.T) {
 	data := `0123456789 0123456789 0123456789 0123456789 0123456789 0123456789`
 	d := Deflate()
 	d.MinSize = 10
-	ctx := context.New(buildReq(false), &config.Template{})
+	ctx := context.New()
+	ctx.Allocate(buildReq(false), &config.Template{})
 	ctx.Add(d.Handler())
 	ctx.Add(func(ctx *context.Context) {
 		ctx.Text(data)
@@ -57,7 +58,8 @@ func TestDeflateWithoutDeflate(t *testing.T) {
 	data := `0123456789 0123456789 0123456789 0123456789 0123456789 0123456789`
 	d := Deflate()
 	d.MinSize = 10
-	ctx := context.New(buildReq(true), &config.Template{})
+	ctx := context.New()
+	ctx.Allocate(buildReq(true), &config.Template{})
 	ctx.Add(d.Handler())
 	ctx.Add(func(ctx *context.Context) {
 		ctx.Text(data)

@@ -146,7 +146,8 @@ func TestSession(t *testing.T) {
 			p.sessions["fixed-session"] = &_session{id: "fixed-session"}
 		}
 		s := Session(&p, &se.Config{}, nil)
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		ctx.Add(s.Handler())
 		ctx.Add(func(ctx *context.Context) {
 			currentSession = GetSession(ctx)
@@ -169,7 +170,8 @@ func TestSession(t *testing.T) {
 
 func TestSessionNil(t *testing.T) {
 	req, _ := http.NewRequest(http.MethodGet, "/", nil)
-	ctx := context.New(req, &config.Template{})
+	ctx := context.New()
+	ctx.Allocate(req, &config.Template{})
 	ctx.Add(func(ctx *context.Context) { GetSession(ctx) })
 	ctx.Chain()
 }

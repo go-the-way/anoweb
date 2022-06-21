@@ -50,7 +50,8 @@ func buildMultipartReq(ignoreExt bool) *http.Request {
 func TestUpload(t *testing.T) {
 	req := buildMultipartReq(false)
 	u := Upload()
-	ctx := context.New(req, &config.Template{})
+	ctx := context.New()
+	ctx.Allocate(req, &config.Template{})
 	ctx.Add(u.Handler())
 	ctx.Chain()
 	_ = ctx.ParseMultipart(0)
@@ -65,7 +66,8 @@ func TestUploadVerifySize(t *testing.T) {
 	req := buildMultipartReq(false)
 	u := Upload()
 	u.Size = 0
-	ctx := context.New(req, &config.Template{})
+	ctx := context.New()
+	ctx.Allocate(req, &config.Template{})
 	ctx.Add(u.Handler())
 	ctx.Chain()
 	r := ctx.Response
@@ -77,7 +79,8 @@ func TestUploadVerifyMime(t *testing.T) {
 	req := buildMultipartReq(false)
 	u := Upload()
 	u.Mimes = []string{}
-	ctx := context.New(req, &config.Template{})
+	ctx := context.New()
+	ctx.Allocate(req, &config.Template{})
 	ctx.Add(u.Handler())
 	ctx.Chain()
 	r := ctx.Response
@@ -90,7 +93,8 @@ func TestUploadVerifyExt(t *testing.T) {
 		req := buildMultipartReq(true)
 		u := Upload()
 		u.Extensions = []string{}
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		ctx.Add(u.Handler())
 		ctx.Chain()
 		r := ctx.Response
@@ -101,7 +105,8 @@ func TestUploadVerifyExt(t *testing.T) {
 		req := buildMultipartReq(false)
 		u := Upload()
 		u.Extensions = []string{}
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		ctx.Add(u.Handler())
 		ctx.Chain()
 		r := ctx.Response

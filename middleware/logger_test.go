@@ -25,7 +25,8 @@ func TestLogger(t *testing.T) {
 	h := Logger()
 	var buf strings.Builder
 	h.logger.SetOutput(&buf)
-	ctx := context.New(req, &config.Template{})
+	ctx := context.New()
+	ctx.Allocate(req, &config.Template{})
 	ctx.Add(h.Handler())
 	ctx.Add(func(ctx *context.Context) {})
 	ctx.Chain()

@@ -29,7 +29,8 @@ func TestContextValidate(t *testing.T) {
 	// test for validated
 	{
 		m := _model{100, "hello"}
-		ctx := New(buildReq(""), &config.Template{})
+		ctx := New()
+		ctx.Allocate(buildReq(""), &config.Template{})
 		called := false
 		ctx.Validate(&m, func() { called = true })
 		require.Equal(t, true, called)
@@ -37,7 +38,8 @@ func TestContextValidate(t *testing.T) {
 	// test for not validated
 	{
 		m := _model{1, "hello"}
-		ctx := New(buildReq(""), &config.Template{})
+		ctx := New()
+		ctx.Allocate(buildReq(""), &config.Template{})
 		called := false
 		ctx.Validate(&m, func() { called = true })
 		require.Equal(t, false, called)
@@ -49,7 +51,8 @@ func TestContextValidate(t *testing.T) {
 	// test for not validated with 2 fields
 	{
 		m := _model{1, "hello-world-world"}
-		ctx := New(buildReq(""), &config.Template{})
+		ctx := New()
+		ctx.Allocate(buildReq(""), &config.Template{})
 		called := false
 		ctx.Validate(&m, func() { called = true })
 		require.Equal(t, false, called)
@@ -68,7 +71,8 @@ func TestValidateWithParams(t *testing.T) {
 			Name string `json:"name" validate:"maxlength(10)"`
 		}
 		m := _model{1, "hello"}
-		ctx := New(buildReq(""), &config.Template{})
+		ctx := New()
+		ctx.Allocate(buildReq(""), &config.Template{})
 		called := false
 		ctx.ValidateWithParams(&m, "_message_", "fail", "_code_", 15000, func() { called = true })
 		require.Equal(t, false, called)
@@ -84,7 +88,8 @@ func TestValidateWithParams(t *testing.T) {
 			Name string `json:"name" validate:"msg(name验证未通过) maxlength(10)"`
 		}
 		m := _model{1, "hello-world-world"}
-		ctx := New(buildReq(""), &config.Template{})
+		ctx := New()
+		ctx.Allocate(buildReq(""), &config.Template{})
 		called := false
 		ctx.ValidateWithParams(&m, "_message_", "fail", "_code_", 15000, func() { called = true })
 		require.Equal(t, false, called)
@@ -103,14 +108,16 @@ func TestBindAndValidate(t *testing.T) {
 	m := _model{}
 	// test for validated
 	{
-		ctx := New(buildReq(`{"id":100,"name":"hello"}`), &config.Template{})
+		ctx := New()
+		ctx.Allocate(buildReq(`{"id":100,"name":"hello"}`), &config.Template{})
 		called := false
 		ctx.BindAndValidate(&m, func() { called = true })
 		require.Equal(t, true, called)
 	}
 	// test for not validated
 	{
-		ctx := New(buildReq(`{"id":1,"name":"hello"}`), &config.Template{})
+		ctx := New()
+		ctx.Allocate(buildReq(`{"id":1,"name":"hello"}`), &config.Template{})
 		called := false
 		ctx.BindAndValidate(&m, func() { called = true })
 		require.Equal(t, false, called)
@@ -121,7 +128,8 @@ func TestBindAndValidate(t *testing.T) {
 	}
 	// test for not validated with 2 fields
 	{
-		ctx := New(buildReq(`{"id":1,"name":"hello-world-world"}`), &config.Template{})
+		ctx := New()
+		ctx.Allocate(buildReq(`{"id":1,"name":"hello-world-world"}`), &config.Template{})
 		called := false
 		ctx.BindAndValidate(&m, func() { called = true })
 		require.Equal(t, false, called)
@@ -140,14 +148,16 @@ func TestBindAndValidateWithParams(t *testing.T) {
 	m := _model{}
 	// test for validated
 	{
-		ctx := New(buildReq(`{"id":100,"name":"hello"}`), &config.Template{})
+		ctx := New()
+		ctx.Allocate(buildReq(`{"id":100,"name":"hello"}`), &config.Template{})
 		called := false
 		ctx.BindAndValidateWithParams(&m, "", "", "", 0, func() { called = true })
 		require.Equal(t, true, called)
 	}
 	// test for not validated
 	{
-		ctx := New(buildReq(`{"id":1,"name":"hello"}`), &config.Template{})
+		ctx := New()
+		ctx.Allocate(buildReq(`{"id":1,"name":"hello"}`), &config.Template{})
 		called := false
 		ctx.BindAndValidateWithParams(&m, "_message_", "fail", "_code_", 15000, func() { called = true })
 		require.Equal(t, false, called)
@@ -158,7 +168,8 @@ func TestBindAndValidateWithParams(t *testing.T) {
 	}
 	// test for not validated with 2 fields
 	{
-		ctx := New(buildReq(`{"id":1,"name":"hello-world-world"}`), &config.Template{})
+		ctx := New()
+		ctx.Allocate(buildReq(`{"id":1,"name":"hello-world-world"}`), &config.Template{})
 		called := false
 		ctx.BindAndValidateWithParams(&m, "_message_", "fail", "_code_", 15000, func() { called = true })
 		require.Equal(t, false, called)

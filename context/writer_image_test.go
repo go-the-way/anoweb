@@ -22,7 +22,8 @@ import (
 )
 
 func TestImage(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.Image([]byte{100, 200, 150})
 	r := ctx.Response
 	require.Equal(t, []byte{100, 200, 150}, r.Data)
@@ -32,7 +33,8 @@ func TestImage(t *testing.T) {
 func TestImageFile(t *testing.T) {
 	_ = ioutil.WriteFile("file.txt", []byte{100, 200, 150}, 0700)
 	defer func() { _ = os.Remove("file.txt") }()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.ImageFile("file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte{100, 200, 150}, r.Data)
@@ -40,7 +42,8 @@ func TestImageFile(t *testing.T) {
 }
 
 func TestICO(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.ICO([]byte{100, 200, 150})
 	r := ctx.Response
 	require.Equal(t, []byte{100, 200, 150}, r.Data)
@@ -50,7 +53,8 @@ func TestICO(t *testing.T) {
 func TestICOFile(t *testing.T) {
 	_ = ioutil.WriteFile("file.txt", []byte{100, 200, 150}, 0700)
 	defer func() { _ = os.Remove("file.txt") }()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.ICOFile("file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte{100, 200, 150}, r.Data)
@@ -58,7 +62,8 @@ func TestICOFile(t *testing.T) {
 }
 
 func TestBMP(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.BMP([]byte{100, 200, 150})
 	r := ctx.Response
 	require.Equal(t, []byte{100, 200, 150}, r.Data)
@@ -68,7 +73,8 @@ func TestBMP(t *testing.T) {
 func TestBMPFile(t *testing.T) {
 	_ = ioutil.WriteFile("file.txt", []byte{100, 200, 150}, 0700)
 	defer func() { _ = os.Remove("file.txt") }()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.BMPFile("file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte{100, 200, 150}, r.Data)
@@ -76,7 +82,8 @@ func TestBMPFile(t *testing.T) {
 }
 
 func TestJPG(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.JPG([]byte{100, 200, 150})
 	r := ctx.Response
 	require.Equal(t, []byte{100, 200, 150}, r.Data)
@@ -86,7 +93,8 @@ func TestJPG(t *testing.T) {
 func TestJPGFile(t *testing.T) {
 	_ = ioutil.WriteFile("file.txt", []byte{100, 200, 150}, 0700)
 	defer func() { _ = os.Remove("file.txt") }()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.JPGFile("file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte{100, 200, 150}, r.Data)
@@ -94,7 +102,8 @@ func TestJPGFile(t *testing.T) {
 }
 
 func TestJPEG(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.JPEG([]byte{100, 200, 150})
 	r := ctx.Response
 	require.Equal(t, []byte{100, 200, 150}, r.Data)
@@ -104,7 +113,8 @@ func TestJPEG(t *testing.T) {
 func TestJPEGFile(t *testing.T) {
 	_ = ioutil.WriteFile("file.txt", []byte{100, 200, 150}, 0700)
 	defer func() { _ = os.Remove("file.txt") }()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.JPEGFile("file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte{100, 200, 150}, r.Data)
@@ -112,7 +122,8 @@ func TestJPEGFile(t *testing.T) {
 }
 
 func TestPNG(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.PNG([]byte{100, 200, 150})
 	r := ctx.Response
 	require.Equal(t, []byte{100, 200, 150}, r.Data)
@@ -122,7 +133,8 @@ func TestPNG(t *testing.T) {
 func TestPNGFile(t *testing.T) {
 	_ = ioutil.WriteFile("file.txt", []byte{100, 200, 150}, 0700)
 	defer func() { _ = os.Remove("file.txt") }()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.PNGFile("file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte{100, 200, 150}, r.Data)
@@ -130,7 +142,8 @@ func TestPNGFile(t *testing.T) {
 }
 
 func TestGIF(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.GIF([]byte{100, 200, 150})
 	r := ctx.Response
 	require.Equal(t, []byte{100, 200, 150}, r.Data)
@@ -140,7 +153,8 @@ func TestGIF(t *testing.T) {
 func TestGIFFile(t *testing.T) {
 	_ = ioutil.WriteFile("file.txt", []byte{100, 200, 150}, 0700)
 	defer func() { _ = os.Remove("file.txt") }()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.GIFFile("file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte{100, 200, 150}, r.Data)

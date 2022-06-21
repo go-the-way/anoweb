@@ -18,14 +18,16 @@ import (
 )
 
 func TestSetData(t *testing.T) {
-	ctx := New(buildReq(""), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildReq(""), &config.Template{})
 	ctx.SetData("apple", 100)
 	require.NotNil(t, ctx.dataMap["apple"])
 	require.Equal(t, ctx.dataMap["apple"], 100)
 }
 
 func TestSetDataMap(t *testing.T) {
-	ctx := New(buildReq(""), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildReq(""), &config.Template{})
 	ctx.SetDataMap(map[string]interface{}{"apple": 100, "orange": 200}, false)
 	require.NotNil(t, ctx.dataMap["apple"])
 	require.Equal(t, ctx.dataMap["apple"], 100)
@@ -34,7 +36,8 @@ func TestSetDataMap(t *testing.T) {
 }
 
 func TestSetDataMapWithFlush(t *testing.T) {
-	ctx := New(buildReq(""), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildReq(""), &config.Template{})
 	ctx.SetData("apple", 10)
 	ctx.SetDataMap(map[string]interface{}{"apple": 100, "orange": 200}, true)
 	require.NotNil(t, ctx.dataMap["apple"])
@@ -44,14 +47,16 @@ func TestSetDataMapWithFlush(t *testing.T) {
 }
 
 func TestGetData(t *testing.T) {
-	ctx := New(buildReq(""), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildReq(""), &config.Template{})
 	ctx.SetData("apple", 100)
 	require.NotNil(t, ctx.GetData("apple"))
 	require.Equal(t, ctx.GetData("apple"), 100)
 }
 
 func TestGetDataMap(t *testing.T) {
-	ctx := New(buildReq(""), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildReq(""), &config.Template{})
 	ctx.SetData("apple", 100)
 	require.NotNil(t, ctx.GetDataMap())
 	require.Equal(t, ctx.GetDataMap()["apple"], 100)

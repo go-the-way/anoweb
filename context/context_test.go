@@ -21,7 +21,8 @@ import (
 
 func TestContextNew(t *testing.T) {
 	req := buildReq(`{"apple":100}`)
-	ctx := New(req, &config.Template{
+	ctx := New()
+	ctx.Allocate(req, &config.Template{
 		FuncMap: template.FuncMap{
 			"sum": func(a, b int) int { return a + b },
 		},
@@ -38,7 +39,8 @@ func TestContextNew(t *testing.T) {
 }
 
 func TestContextAdd(t *testing.T) {
-	ctx := New(buildReq(""), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildReq(""), &config.Template{})
 	ctx.Add(func(ctx *Context) {})
 	ctx.Add(func(ctx *Context) {})
 	ctx.Add(func(ctx *Context) {})
@@ -46,7 +48,8 @@ func TestContextAdd(t *testing.T) {
 }
 
 func TestContextChain(t *testing.T) {
-	ctx := New(buildReq(""), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildReq(""), &config.Template{})
 	apple := 0
 	ctx.Add(func(ctx *Context) { apple++; ctx.Chain() })
 	ctx.Add(func(ctx *Context) { apple++; ctx.Chain() })
@@ -56,26 +59,30 @@ func TestContextChain(t *testing.T) {
 }
 
 func TestContextWrite(t *testing.T) {
-	ctx := New(buildReq(""), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildReq(""), &config.Template{})
 	ctx.Data([]byte(`hello world`))
 	require.Equal(t, []byte(`hello world`), ctx.Response.Data)
 }
 
 func TestContextStatus(t *testing.T) {
-	ctx := New(buildReq(""), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildReq(""), &config.Template{})
 	ctx.Status(150)
 	require.Equal(t, 150, ctx.Response.Status)
 }
 
 func TestContextHeader(t *testing.T) {
-	ctx := New(buildReq(""), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildReq(""), &config.Template{})
 	ctx.Header(http.Header{"nobody": {"apple"}})
 	ctx.Header(http.Header{"nobody": {"pear"}})
 	require.Equal(t, http.Header{"nobody": {"apple", "pear"}}, ctx.Response.Header)
 }
 
 func TestContextAddCookie(t *testing.T) {
-	ctx := New(buildReq(""), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildReq(""), &config.Template{})
 	ctx.AddCookie(&http.Cookie{Name: "apple", Value: "100"})
 	require.Equal(t, []*http.Cookie{{Name: "apple", Value: "100"}}, ctx.Response.Cookies)
 }

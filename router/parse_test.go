@@ -27,7 +27,8 @@ func TestParsedRouterHandler(t *testing.T) {
 		req, _ := http.NewRequest(http.MethodGet, "/index", nil)
 		pass := false
 		pr := &ParsedRouter{Simples: SimpleM{"GET:": {http.MethodGet, "/", func(ctx *context.Context) { pass = true }}}}
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		handler := pr.Handler(ctx)
 		if handler != nil {
 			handler(ctx)
@@ -39,7 +40,8 @@ func TestParsedRouterHandler(t *testing.T) {
 		req, _ := http.NewRequest(http.MethodGet, "/", nil)
 		pass := false
 		pr := &ParsedRouter{Simples: SimpleM{"GET:": {http.MethodGet, "/", func(ctx *context.Context) { pass = true }}}}
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		handler := pr.Handler(ctx)
 		if handler != nil {
 			handler(ctx)
@@ -51,7 +53,8 @@ func TestParsedRouterHandler(t *testing.T) {
 		pass := false
 		req, _ := http.NewRequest(http.MethodGet, "/index/apple", nil)
 		pr := &ParsedRouter{Dynamics: DynamicM{http.MethodGet: {`^/index/([\w_.-]+)$`: {[]string{"id"}, &Simple{http.MethodGet, "", func(ctx *context.Context) { pass = true }}}}}}
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		handler := pr.Handler(ctx)
 		if handler != nil {
 			handler(ctx)
@@ -64,7 +67,8 @@ func TestParsedRouterHandler(t *testing.T) {
 		pass := false
 		req, _ := http.NewRequest(http.MethodGet, "/index/apple/pear", nil)
 		pr := &ParsedRouter{Dynamics: DynamicM{http.MethodGet: {`^/index/([\w_.-]+)/([\w_.-]+)$`: {[]string{"id1", "id2"}, &Simple{http.MethodGet, "", func(ctx *context.Context) { pass = true }}}}}}
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		handler := pr.Handler(ctx)
 		if handler != nil {
 			handler(ctx)
@@ -78,7 +82,8 @@ func TestParsedRouterHandler(t *testing.T) {
 		pass := false
 		req, _ := http.NewRequest(http.MethodGet, "/index/apple", nil)
 		pr := &ParsedRouter{Dynamics: DynamicM{http.MethodGet: {`^/index/([\w_.-]+)/([\w_.-]+)$`: {[]string{"id1", "id2"}, &Simple{http.MethodGet, "", func(ctx *context.Context) { pass = true }}}}}}
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		handler := pr.Handler(ctx)
 		if handler != nil {
 			handler(ctx)

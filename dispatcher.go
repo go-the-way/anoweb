@@ -12,11 +12,10 @@
 package anoweb
 
 import (
-	"net/http"
-
 	"github.com/go-the-way/anoweb/context"
 	"github.com/go-the-way/anoweb/headers"
 	"github.com/go-the-way/anoweb/middleware"
+	"net/http"
 )
 
 type dispatcher struct {
@@ -32,7 +31,8 @@ func (d *dispatcher) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (d *dispatcher) dispatch(r *http.Request, w http.ResponseWriter) {
-	ctx := context.New(r, d.App.Config.Template)
+	ctx := d.ctxPool.Get().(*context.Context)
+	ctx.Allocate(r, d.App.Config.Template)
 	d.addChains(ctx, d.App.parsedRouters.Handler(ctx), d.App.Middlewares())
 	ctx.Chain()
 	d.writeDone(ctx.Response, w)

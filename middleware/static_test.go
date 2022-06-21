@@ -27,7 +27,8 @@ func TestStatic(t *testing.T) {
 	{
 		req, _ := http.NewRequest(http.MethodGet, "/static/a.txt", nil)
 		s := Static(false, "./testdata", "")
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		ctx.Add(s.Handler())
 		ctx.Chain()
 		r := ctx.Response
@@ -38,7 +39,8 @@ func TestStatic(t *testing.T) {
 	{
 		req, _ := http.NewRequest(http.MethodGet, "/static/a.jpg", nil)
 		s := Static(false, "./testdata", "")
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		ctx.Add(s.Handler())
 		ctx.Chain()
 		r := ctx.Response
@@ -49,7 +51,8 @@ func TestStatic(t *testing.T) {
 	{
 		req, _ := http.NewRequest(http.MethodGet, "/static/a.zip", nil)
 		s := Static(false, "./testdata", "")
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		ctx.Add(s.Handler())
 		ctx.Chain()
 		r := ctx.Response
@@ -62,7 +65,8 @@ func TestStaticMimeNotExists(t *testing.T) {
 	req, _ := http.NewRequest(http.MethodGet, "/static/a.txt", nil)
 	s := Static(false, "./testdata", "")
 	s.Mimes = map[string]string{}
-	ctx := context.New(req, &config.Template{})
+	ctx := context.New()
+	ctx.Allocate(req, &config.Template{})
 	ctx.Add(s.Handler())
 	ctx.Chain()
 	r := ctx.Response
@@ -74,7 +78,8 @@ func TestStaticCache(t *testing.T) {
 	s := Static(true, "./testdata", "")
 	{
 		req, _ := http.NewRequest(http.MethodGet, "/static/a.txt", nil)
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		ctx.Add(s.Handler())
 		ctx.Chain()
 		r := ctx.Response
@@ -83,7 +88,8 @@ func TestStaticCache(t *testing.T) {
 	}
 	{
 		req, _ := http.NewRequest(http.MethodGet, "/static/a.txt", nil)
-		ctx := context.New(req, &config.Template{})
+		ctx := context.New()
+		ctx.Allocate(req, &config.Template{})
 		ctx.Add(s.Handler())
 		ctx.Chain()
 		r := ctx.Response
@@ -95,7 +101,8 @@ func TestStaticCache(t *testing.T) {
 func TestStaticReadFile(t *testing.T) {
 	s := Static(true, "./testdata", "")
 	req, _ := http.NewRequest(http.MethodGet, "/static/a-haha.txt", nil)
-	ctx := context.New(req, &config.Template{})
+	ctx := context.New()
+	ctx.Allocate(req, &config.Template{})
 	ctx.Add(s.Handler())
 	ctx.Chain()
 	r := ctx.Response

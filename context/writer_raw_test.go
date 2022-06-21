@@ -22,7 +22,8 @@ import (
 )
 
 func TestText(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.Text(`hello world`)
 	r := ctx.Response
 	require.Equal(t, []byte(`hello world`), r.Data)
@@ -32,7 +33,8 @@ func TestText(t *testing.T) {
 func TestTextFile(t *testing.T) {
 	_ = ioutil.WriteFile("file.txt", []byte("hello world"), 0700)
 	defer func() { _ = os.Remove("file.txt") }()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.TextFile("file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte(`hello world`), r.Data)
@@ -40,7 +42,8 @@ func TestTextFile(t *testing.T) {
 }
 
 func TestJSON(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.JSON(map[string]interface{}{"apple": 100})
 	r := ctx.Response
 	require.Equal(t, []byte(`{"apple":100}`), r.Data)
@@ -53,12 +56,14 @@ func TestJSONPanic(t *testing.T) {
 			t.Log("test ok!")
 		}
 	}()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.JSON(map[string]interface{}{"_": func() {}})
 }
 
 func TestJSONText(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.JSONText(`{"apple":100}`)
 	r := ctx.Response
 	require.Equal(t, []byte(`{"apple":100}`), r.Data)
@@ -68,7 +73,8 @@ func TestJSONText(t *testing.T) {
 func TestJSONFile(t *testing.T) {
 	_ = ioutil.WriteFile("file.txt", []byte(`{"apple":100}`), 0700)
 	defer func() { _ = os.Remove("file.txt") }()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.JSONFile("file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte(`{"apple":100}`), r.Data)
@@ -79,7 +85,8 @@ func TestXML(t *testing.T) {
 	type _xml struct {
 		Apple string `xml:"apple"`
 	}
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.XML(&_xml{"100"})
 	r := ctx.Response
 	require.Equal(t, []byte(`<_xml><apple>100</apple></_xml>`), r.Data)
@@ -92,12 +99,14 @@ func TestXMLPanic(t *testing.T) {
 			t.Log("test ok!")
 		}
 	}()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.XML([]byte(`hello world`))
 }
 
 func TestXMLText(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.XMLText(`<_xml><apple>100</apple></_xml>`)
 	r := ctx.Response
 	require.Equal(t, []byte(`<_xml><apple>100</apple></_xml>`), r.Data)
@@ -107,7 +116,8 @@ func TestXMLText(t *testing.T) {
 func TestXMLFile(t *testing.T) {
 	_ = ioutil.WriteFile("file.txt", []byte(`<_xml><apple>100</apple></_xml>`), 0700)
 	defer func() { _ = os.Remove("file.txt") }()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.XMLFile("file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte(`<_xml><apple>100</apple></_xml>`), r.Data)
@@ -115,7 +125,8 @@ func TestXMLFile(t *testing.T) {
 }
 
 func TestHTML(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.HTML(`<html><body>hello world</body></html>`)
 	r := ctx.Response
 	require.Equal(t, []byte(`<html><body>hello world</body></html>`), r.Data)
@@ -125,7 +136,8 @@ func TestHTML(t *testing.T) {
 func TestHTMLFile(t *testing.T) {
 	_ = ioutil.WriteFile("file.txt", []byte(`<html><body>hello world</body></html>`), 0700)
 	defer func() { _ = os.Remove("file.txt") }()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.HTMLFile("file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte(`<html><body>hello world</body></html>`), r.Data)
@@ -133,7 +145,8 @@ func TestHTMLFile(t *testing.T) {
 }
 
 func TestCSS(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.CSS(`div{color:red;}`)
 	r := ctx.Response
 	require.Equal(t, []byte(`div{color:red;}`), r.Data)
@@ -143,7 +156,8 @@ func TestCSS(t *testing.T) {
 func TestCSSFile(t *testing.T) {
 	_ = ioutil.WriteFile("file.txt", []byte(`div{color:red;}`), 0700)
 	defer func() { _ = os.Remove("file.txt") }()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.CSSFile("file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte(`div{color:red;}`), r.Data)
@@ -151,7 +165,8 @@ func TestCSSFile(t *testing.T) {
 }
 
 func TestJS(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.JS(`alert(100);`)
 	r := ctx.Response
 	require.Equal(t, []byte(`alert(100);`), r.Data)
@@ -161,7 +176,8 @@ func TestJS(t *testing.T) {
 func TestJSFile(t *testing.T) {
 	_ = ioutil.WriteFile("file.txt", []byte(`alert(100);`), 0700)
 	defer func() { _ = os.Remove("file.txt") }()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.JSFile("file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte(`alert(100);`), r.Data)

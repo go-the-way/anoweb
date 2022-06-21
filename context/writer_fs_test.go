@@ -24,7 +24,8 @@ import (
 var rFS embed.FS
 
 func TestTextFSFile(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.TextFSFile(&rFS, "testdata/file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte(`hello world`), r.Data)
@@ -32,7 +33,8 @@ func TestTextFSFile(t *testing.T) {
 }
 
 func TestJSONFSFile(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.JSONFSFile(&rFS, "testdata/file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte(`hello world`), r.Data)
@@ -40,7 +42,8 @@ func TestJSONFSFile(t *testing.T) {
 }
 
 func TestXMLFSFile(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.XMLFSFile(&rFS, "testdata/file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte(`hello world`), r.Data)
@@ -48,7 +51,8 @@ func TestXMLFSFile(t *testing.T) {
 }
 
 func TestImageFSFile(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.ImageFSFile(&rFS, "testdata/file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte(`hello world`), r.Data)
@@ -56,7 +60,8 @@ func TestImageFSFile(t *testing.T) {
 }
 
 func TestICOFSFile(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.ICOFSFile(&rFS, "testdata/file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte(`hello world`), r.Data)
@@ -64,7 +69,8 @@ func TestICOFSFile(t *testing.T) {
 }
 
 func TestBMPFSFile(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.BMPFSFile(&rFS, "testdata/file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte(`hello world`), r.Data)
@@ -72,7 +78,8 @@ func TestBMPFSFile(t *testing.T) {
 }
 
 func TestJPGFSFile(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.JPGFSFile(&rFS, "testdata/file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte(`hello world`), r.Data)
@@ -80,7 +87,8 @@ func TestJPGFSFile(t *testing.T) {
 }
 
 func TestJPEGFSFile(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.JPEGFSFile(&rFS, "testdata/file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte(`hello world`), r.Data)
@@ -88,7 +96,8 @@ func TestJPEGFSFile(t *testing.T) {
 }
 
 func TestPNGFSFile(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.PNGFSFile(&rFS, "testdata/file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte(`hello world`), r.Data)
@@ -96,7 +105,8 @@ func TestPNGFSFile(t *testing.T) {
 }
 
 func TestGIFFSFile(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.GIFFSFile(&rFS, "testdata/file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte(`hello world`), r.Data)
@@ -104,7 +114,8 @@ func TestGIFFSFile(t *testing.T) {
 }
 
 func TestHTMLFSFile(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.HTMLFSFile(&rFS, "testdata/file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte(`hello world`), r.Data)
@@ -112,7 +123,8 @@ func TestHTMLFSFile(t *testing.T) {
 }
 
 func TestCSSFSFile(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.CSSFSFile(&rFS, "testdata/file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte(`hello world`), r.Data)
@@ -120,7 +132,8 @@ func TestCSSFSFile(t *testing.T) {
 }
 
 func TestJSFSFile(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.JSFSFile(&rFS, "testdata/file.txt")
 	r := ctx.Response
 	require.Equal(t, []byte(`hello world`), r.Data)
@@ -128,7 +141,8 @@ func TestJSFSFile(t *testing.T) {
 }
 
 func TestFSFile(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.FSFile(&rFS, "testdata/file.txt", mime.TEXT)
 	r := ctx.Response
 	require.Equal(t, []byte(`hello world`), r.Data)
@@ -141,6 +155,7 @@ func TestFSFilePanic(t *testing.T) {
 			t.Log("test ok!")
 		}
 	}()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.FSFile(&rFS, "testdata/file-haha.txt", mime.TEXT)
 }

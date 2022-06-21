@@ -24,7 +24,8 @@ import (
 func TestFile(t *testing.T) {
 	_ = ioutil.WriteFile("file.txt", []byte(`hello world`), 0700)
 	defer func() { _ = os.Remove("file.txt") }()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.File("file.txt", mime.BINARY)
 	r := ctx.Response
 	require.Equal(t, []byte(`hello world`), r.Data)
@@ -37,12 +38,14 @@ func TestFilePanic(t *testing.T) {
 			t.Log("test ok!")
 		}
 	}()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.File("file.txt", mime.BINARY)
 }
 
 func TestBinary(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.Binary([]byte{100, 200, 150}, mime.BINARY)
 	r := ctx.Response
 	require.Equal(t, []byte{100, 200, 150}, r.Data)

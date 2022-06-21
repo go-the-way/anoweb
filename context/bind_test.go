@@ -32,7 +32,8 @@ func TestContextBind(t *testing.T) {
 		Name string `json:"name"`
 	}
 	m := _model{}
-	ctx := New(buildReq(`{"id":100,"name":"hello world"}`), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildReq(`{"id":100,"name":"hello world"}`), &config.Template{})
 	ctx.Bind(&m)
 	require.Equal(t, &_model{100, "hello world"}, &m)
 }
@@ -49,6 +50,7 @@ func TestContextBindPanic(t *testing.T) {
 		}
 	}()
 	m := _model{}
-	ctx := New(buildReq(`<xml></xml>`), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildReq(`<xml></xml>`), &config.Template{})
 	ctx.Bind(&m)
 }

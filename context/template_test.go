@@ -25,19 +25,22 @@ import (
 )
 
 func TestAddFunc(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.AddFunc("sum", func(a, b int) int { return a + b })
 	require.NotNil(t, ctx.funcMap["sum"])
 }
 
 func TestAddFuncMap(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.AddFuncMap(template.FuncMap{"sum": func(a, b int) int { return a + b }})
 	require.NotNil(t, ctx.funcMap["sum"])
 }
 
 func TestTemplate(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.Template("<h1>hello world</h1>", nil)
 	require.Equal(t, []byte("<h1>hello world</h1>"), ctx.Response.Data)
 	require.Equal(t, mime.HTML, ctx.Response.ContentType)
@@ -49,7 +52,8 @@ func TestTemplateNewPanic(t *testing.T) {
 			t.Log("test ok!")
 		}
 	}()
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.Template("<h1>{{.HELLO</h1>", nil)
 }
 
@@ -59,7 +63,8 @@ func TestTemplateExecutePanic(t *testing.T) {
 			t.Log("test ok!")
 		}
 	}()
-	ctx := New(buildReq(""), &config.Template{
+	ctx := New()
+	ctx.Allocate(buildReq(""), &config.Template{
 		FuncMap: map[string]interface{}{
 			"sum": func(a, b int) int {
 				return a + b
@@ -73,7 +78,8 @@ func TestTemplateFile(t *testing.T) {
 	_testFunc := func() {
 		root, _ := os.Getwd()
 		tplDir, _ := filepath.Abs(filepath.Join(root, "testdata"))
-		ctx := New(buildReq(""), &config.Template{Cache: true, Root: tplDir, Suffix: ".html"})
+		ctx := New()
+		ctx.Allocate(buildReq(""), &config.Template{Cache: true, Root: tplDir, Suffix: ".html"})
 		// test for no data
 		{
 			ctx.TemplateFile("test", nil)
@@ -99,7 +105,8 @@ func TestTemplateFileReadFilePanic(t *testing.T) {
 	}()
 	root, _ := os.Getwd()
 	tplDir, _ := filepath.Abs(filepath.Join(root, "testdata"))
-	ctx := New(buildReq(""), &config.Template{Root: tplDir, Suffix: ".html", FuncMap: map[string]interface{}{}})
+	ctx := New()
+	ctx.Allocate(buildReq(""), &config.Template{Root: tplDir, Suffix: ".html", FuncMap: map[string]interface{}{}})
 	ctx.TemplateFile("test-haha", nil)
 }
 
@@ -108,7 +115,8 @@ var tFS embed.FS
 
 func TestTemplateFS(t *testing.T) {
 	_testFunc := func() {
-		ctx := New(buildReq(""), &config.Template{Cache: true, Suffix: ".html", FuncMap: map[string]interface{}{}})
+		ctx := New()
+		ctx.Allocate(buildReq(""), &config.Template{Cache: true, Suffix: ".html", FuncMap: map[string]interface{}{}})
 		// test for no data
 		{
 			ctx.TemplateFS(&tFS, "testdata/test", nil)
@@ -134,6 +142,7 @@ func TestTemplateFSReadFilePanic(t *testing.T) {
 	}()
 	root, _ := os.Getwd()
 	tplDir, _ := filepath.Abs(filepath.Join(root, "testdata"))
-	ctx := New(buildReq(""), &config.Template{Root: tplDir, Suffix: ".html", FuncMap: map[string]interface{}{}})
+	ctx := New()
+	ctx.Allocate(buildReq(""), &config.Template{Root: tplDir, Suffix: ".html", FuncMap: map[string]interface{}{}})
 	ctx.TemplateFS(&tFS, "test-haha", nil)
 }

@@ -44,13 +44,15 @@ func buildMultipartReq() *http.Request {
 }
 
 func TestMultipartFileNil(t *testing.T) {
-	ctx := New(buildReq(""), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildReq(""), &config.Template{})
 	_ = ctx.ParseMultipart(0)
 	require.Nil(t, ctx.MultipartFile("file"))
 }
 
 func TestMultipartFileCopy(t *testing.T) {
-	ctx := New(buildMultipartReq(), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildMultipartReq(), &config.Template{})
 	defer func() { _ = ctx.Request.MultipartForm.RemoveAll() }()
 	_ = ctx.ParseMultipart(0)
 	ff := ctx.MultipartFile("file")
@@ -61,7 +63,8 @@ func TestMultipartFileCopy(t *testing.T) {
 }
 
 func TestMultipartFileCopyErr(t *testing.T) {
-	ctx := New(buildMultipartReq(), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildMultipartReq(), &config.Template{})
 	defer func() { _ = ctx.Request.MultipartForm.RemoveAll() }()
 	_ = ctx.ParseMultipart(0)
 	ff := ctx.MultipartFile("file")
@@ -75,7 +78,8 @@ func TestParseMultipart(t *testing.T) {
 	filename := "part.txt"
 	_ = ioutil.WriteFile(filename, []byte("hello"), 0700)
 	defer func() { _ = os.Remove(filename) }()
-	ctx := New(buildMultipartReq(), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildMultipartReq(), &config.Template{})
 	defer func() { _ = ctx.Request.MultipartForm.RemoveAll() }()
 	_ = ctx.ParseMultipart(0)
 	ff := ctx.MultipartFile("file")
@@ -86,7 +90,8 @@ func TestMultipartFile(t *testing.T) {
 	filename := "part.txt"
 	_ = ioutil.WriteFile(filename, []byte("hello"), 0700)
 	defer func() { _ = os.Remove(filename) }()
-	ctx := New(buildMultipartReq(), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildMultipartReq(), &config.Template{})
 	defer func() { _ = ctx.Request.MultipartForm.RemoveAll() }()
 	_ = ctx.ParseMultipart(0)
 	ff := ctx.MultipartFile("file")
@@ -97,7 +102,8 @@ func TestMultipartFiles(t *testing.T) {
 	filename := "part.txt"
 	_ = ioutil.WriteFile(filename, []byte("hello"), 0700)
 	defer func() { _ = os.Remove(filename) }()
-	ctx := New(buildMultipartReq(), &config.Template{})
+	ctx := New()
+	ctx.Allocate(buildMultipartReq(), &config.Template{})
 	defer func() { _ = ctx.Request.MultipartForm.RemoveAll() }()
 	_ = ctx.ParseMultipart(0)
 	ff := ctx.MultipartFiles("file")

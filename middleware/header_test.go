@@ -25,7 +25,8 @@ import (
 func TestHeader(t *testing.T) {
 	req, _ := http.NewRequest(http.MethodGet, "", nil)
 	h := Header()
-	ctx := context.New(req, &config.Template{})
+	ctx := context.New()
+	ctx.Allocate(req, &config.Template{})
 	ctx.Add(h.Handler())
 	ctx.Chain()
 	r := ctx.Response

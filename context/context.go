@@ -32,31 +32,34 @@ type Context struct {
 }
 
 // New context
-func New(r *http.Request, templateConfig *config.Template) *Context {
+func New() *Context {
+	ctx := &Context{
+		Response:     Builder().DefaultBuild(),
+		handlers:     make([]func(c *Context), 0),
+		paramMap:     make(map[string][]string, 0),
+		MultipartMap: make(map[string][]*MultipartFile, 0),
+		dataMap:      make(map[string]interface{}, 0),
+	}
+	ctx.onCreated()
+	return ctx
+}
+
+func (ctx *Context) Allocate(req *http.Request, templateConfig *config.Template) {
+	ctx.Request = req
 	funcMap := make(map[string]interface{}, 0)
 	if templateConfig != nil && templateConfig.FuncMap != nil {
 		for k, v := range templateConfig.FuncMap {
 			funcMap[k] = v
 		}
 	}
-	ctx := &Context{
-		Request:        r,
-		Response:       Builder().DefaultBuild(),
-		handlers:       make([]func(c *Context), 0),
-		paramMap:       make(map[string][]string, 0),
-		MultipartMap:   make(map[string][]*MultipartFile, 0),
-		dataMap:        make(map[string]interface{}, 0),
-		funcMap:        funcMap,
-		templateConfig: templateConfig,
-	}
-	ctx.onCreated()
 	_ = ctx.Request.ParseForm()
 	if ctx.Request.Form != nil {
 		for k := range ctx.Request.Form {
 			ctx.paramMap[k] = ctx.Request.Form[k]
 		}
 	}
-	return ctx
+	ctx.templateConfig = templateConfig
+	ctx.funcMap = funcMap
 }
 
 // Add context handler

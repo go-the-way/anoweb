@@ -26,7 +26,8 @@ func TestGzip(t *testing.T) {
 	data := `0123456789 0123456789 0123456789 0123456789 0123456789 0123456789`
 	g := Gzip()
 	g.MinSize = 10
-	ctx := context.New(buildReq(false), &config.Template{})
+	ctx := context.New()
+	ctx.Allocate(buildReq(false), &config.Template{})
 	ctx.Add(g.Handler())
 	ctx.Add(func(ctx *context.Context) {
 		ctx.Text(data)
@@ -46,7 +47,8 @@ func TestGzipWithoutGzip(t *testing.T) {
 	data := `0123456789 0123456789 0123456789 0123456789 0123456789 0123456789`
 	g := Gzip()
 	g.MinSize = 10
-	ctx := context.New(buildReq(true), &config.Template{})
+	ctx := context.New()
+	ctx.Allocate(buildReq(true), &config.Template{})
 	ctx.Add(g.Handler())
 	ctx.Add(func(ctx *context.Context) {
 		ctx.Text(data)

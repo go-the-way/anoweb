@@ -20,7 +20,8 @@ import (
 )
 
 func TestRewrite(t *testing.T) {
-	ctx := New(buildReq(""), nil)
+	ctx := New()
+	ctx.Allocate(buildReq(""), nil)
 	ctx.Redirect("https://www.example.com")
 	require.Equal(t, "https://www.example.com", ctx.Response.Header.Get(headers.Location))
 }

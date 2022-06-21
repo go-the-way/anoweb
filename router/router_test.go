@@ -229,7 +229,8 @@ func TestRouterResource(t *testing.T) {
 	}()
 	r := NewRouter()
 	r.Resource("/res", "res.txt", mime.TEXT)
-	ctx := context.New(buildReq(), &config.Template{})
+	ctx := context.New()
+	ctx.Allocate(buildReq(), &config.Template{})
 	ctx.Add(r.Simples[0].Handler)
 	ctx.Chain()
 }
@@ -256,7 +257,8 @@ func TestRouterFSResource(t *testing.T) {
 	}()
 	r := NewRouter()
 	r.FSResource(&fs, "/res", "res.txt", mime.TEXT)
-	ctx := context.New(buildReq(), &config.Template{})
+	ctx := context.New()
+	ctx.Allocate(buildReq(), &config.Template{})
 	ctx.Add(r.Simples[0].Handler)
 	ctx.Chain()
 }
