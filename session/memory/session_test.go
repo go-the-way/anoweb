@@ -260,7 +260,7 @@ func TestSessionGet(t *testing.T) {
 
 func TestSessionGetAll(t *testing.T) {
 	port := nextPort()
-	dataCh := make(chan map[string]interface{}, 1)
+	dataCh := make(chan map[string]any, 1)
 	go func() {
 		app := anoweb.New()
 		app.Config.Server.Port = port
@@ -268,7 +268,7 @@ func TestSessionGetAll(t *testing.T) {
 			currSession := middleware.GetSession(ctx)
 			dataCh <- currSession.GetAll()
 		}).UseSession(Provider(), &s.Config{Valid: time.Minute}, &s.Listener{Created: func(session s.Session) {
-			session.SetAll(map[string]interface{}{
+			session.SetAll(map[string]any{
 				"apple":  "100",
 				"banana": "200",
 			}, false)
@@ -342,7 +342,7 @@ func TestSessionSet(t *testing.T) {
 
 func TestSessionSetAll(t *testing.T) {
 	port := nextPort()
-	dataCh := make(chan map[string]interface{}, 1)
+	dataCh := make(chan map[string]any, 1)
 	go func() {
 		app := anoweb.New()
 		app.Config.Server.Port = port
@@ -350,7 +350,7 @@ func TestSessionSetAll(t *testing.T) {
 			currSession := middleware.GetSession(ctx)
 			currSession.SetAll(nil, false)
 			currSession.Set("apple", "100")
-			currSession.SetAll(map[string]interface{}{
+			currSession.SetAll(map[string]any{
 				"apple":  "100",
 				"banana": "200",
 			}, true)
@@ -386,7 +386,7 @@ func TestSessionSetAll(t *testing.T) {
 
 func TestSessionDel(t *testing.T) {
 	port := nextPort()
-	dataCh := make(chan interface{}, 1)
+	dataCh := make(chan any, 1)
 	go func() {
 		app := anoweb.New()
 		app.Config.Server.Port = port
@@ -427,7 +427,7 @@ func TestSessionDel(t *testing.T) {
 
 func TestSessionClear(t *testing.T) {
 	port := nextPort()
-	dataCh := make(chan interface{}, 1)
+	dataCh := make(chan any, 1)
 	go func() {
 		app := anoweb.New()
 		app.Config.Server.Port = port

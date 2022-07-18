@@ -26,13 +26,13 @@ type Session interface {
 	// Invalidated session
 	Invalidated() bool
 	// Get named val
-	Get(name string) interface{}
+	Get(name string) any
 	// GetAll session's values
-	GetAll() map[string]interface{}
+	GetAll() map[string]any
 	// Set named val
-	Set(name string, val interface{})
+	Set(name string, val any)
 	// SetAll values
-	SetAll(data map[string]interface{}, flush bool)
+	SetAll(data map[string]any, flush bool)
 	// Del named val
 	Del(name string)
 	// Clear session's val

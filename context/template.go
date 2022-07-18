@@ -22,7 +22,7 @@ import (
 var templateCaches = make(map[string]string, 0)
 
 // AddFunc add func
-func (ctx *Context) AddFunc(name string, funcMap interface{}) *Context {
+func (ctx *Context) AddFunc(name string, funcMap any) *Context {
 	if name != "" && funcMap != nil {
 		ctx.funcMap[name] = funcMap
 	}
@@ -40,7 +40,7 @@ func (ctx *Context) AddFuncMap(funcMap template.FuncMap) *Context {
 }
 
 // Template Response template
-func (ctx *Context) Template(tpl string, data map[string]interface{}) {
+func (ctx *Context) Template(tpl string, data map[string]any) {
 	t, err := template.New("HTML").Funcs(ctx.funcMap).Parse(tpl)
 	if err != nil {
 		panic(err)
@@ -55,7 +55,7 @@ func (ctx *Context) Template(tpl string, data map[string]interface{}) {
 }
 
 // TemplateFile Response template with file
-func (ctx *Context) TemplateFile(prefix string, data map[string]interface{}) {
+func (ctx *Context) TemplateFile(prefix string, data map[string]any) {
 	fileName := prefix + ctx.templateConfig.Suffix
 	tpl, have := templateCaches[fileName]
 	realPath := filepath.Join(ctx.templateConfig.Root, fileName)
@@ -73,7 +73,7 @@ func (ctx *Context) TemplateFile(prefix string, data map[string]interface{}) {
 }
 
 // TemplateFS Response template with rFS
-func (ctx *Context) TemplateFS(FS *embed.FS, prefix string, data map[string]interface{}) {
+func (ctx *Context) TemplateFS(FS *embed.FS, prefix string, data map[string]any) {
 	fileName := prefix + ctx.templateConfig.Suffix
 	tpl, have := templateCaches[fileName]
 	if !have {

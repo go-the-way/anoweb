@@ -56,7 +56,7 @@ func New() *App {
 		parsedRouters:  &router.ParsedRouter{Simples: make(router.SimpleM), Dynamics: make(router.DynamicM)},
 		middlewares:    make([]middleware.Middleware, 6),
 		defaultMWState: &defaultMWState{header: true, faviconFile: "favicon.ico", faviconRoute: "/favicon.ico"},
-		ctxPool:        &sync.Pool{New: func() interface{} { return context.New() }}}
+		ctxPool:        &sync.Pool{New: func() any { return context.New() }}}
 }
 
 // Run App

@@ -12,13 +12,13 @@
 package context
 
 // SetData Set data into context
-func (ctx *Context) SetData(name string, value interface{}) *Context {
+func (ctx *Context) SetData(name string, value any) *Context {
 	ctx.dataMap[name] = value
 	return ctx
 }
 
 // SetDataMap Set data map into context
-func (ctx *Context) SetDataMap(dataMap map[string]interface{}, flush bool) *Context {
+func (ctx *Context) SetDataMap(dataMap map[string]any, flush bool) *Context {
 	if flush {
 		for k := range ctx.dataMap {
 			delete(ctx.dataMap, k)
@@ -33,11 +33,11 @@ func (ctx *Context) SetDataMap(dataMap map[string]interface{}, flush bool) *Cont
 }
 
 // GetData get data from context
-func (ctx *Context) GetData(name string) interface{} {
+func (ctx *Context) GetData(name string) any {
 	return ctx.dataMap[name]
 }
 
 // GetDataMap get data map from context
-func (ctx *Context) GetDataMap() map[string]interface{} {
+func (ctx *Context) GetDataMap() map[string]any {
 	return ctx.dataMap
 }

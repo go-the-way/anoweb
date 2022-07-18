@@ -20,6 +20,8 @@ import (
 
 	"github.com/go-the-way/anoweb/context"
 	"github.com/go-the-way/anoweb/util"
+
+	"github.com/gorilla/mux"
 )
 
 var (
@@ -36,19 +38,15 @@ var (
 	}
 )
 
+type router = mux.Router
+
 // Router struct
-type Router struct {
-	Simples  []*Simple
-	Dynamics []*Dynamic
-}
+type Router struct{ *router }
 
 // NewRouter return new router
-func NewRouter() *Router {
-	return &Router{make([]*Simple, 0), make([]*Dynamic, 0)}
-}
+func NewRouter() *Router { return &Router{mux.NewRouter()} }
 
-// Request Route all Methods
-func (r *Router) Request(pattern string, handler func(ctx *context.Context)) *Router {
+func (r *Router) Req(pattern string, handler func(ctx *context.Context)) *Router {
 	return r.Route("*", pattern, handler)
 }
 
@@ -110,6 +108,7 @@ func (r *Router) Route(method, pattern string, handler func(ctx *context.Context
 	} else {
 		r.simpleRoute(method, pattern, handler)
 	}
+
 	return r
 }
 

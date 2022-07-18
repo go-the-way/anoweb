@@ -29,7 +29,7 @@ func (ctx *Context) TextFile(textFile string) {
 }
 
 // JSON Response JSON
-func (ctx *Context) JSON(data interface{}) {
+func (ctx *Context) JSON(data any) {
 	jsonData, err := json.Marshal(data)
 	if err != nil {
 		panic(err)
@@ -48,7 +48,7 @@ func (ctx *Context) JSONFile(jsonFile string) {
 }
 
 // XML Response XML
-func (ctx *Context) XML(data interface{}) {
+func (ctx *Context) XML(data any) {
 	xmlData, err := xml.Marshal(data)
 	if err != nil {
 		panic(err)

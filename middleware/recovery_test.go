@@ -25,7 +25,7 @@ import (
 func TestRecovery(t *testing.T) {
 	req, _ := http.NewRequest(http.MethodGet, "/", nil)
 	pass := false
-	var panicObj interface{}
+	var panicObj any
 	r := Recovery(func(ctx *context.Context) {
 		defer func() {
 			if re := recover(); re != nil {

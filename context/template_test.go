@@ -65,7 +65,7 @@ func TestTemplateExecutePanic(t *testing.T) {
 	}()
 	ctx := New()
 	ctx.Allocate(buildReq(""), &config.Template{
-		FuncMap: map[string]interface{}{
+		FuncMap: map[string]any{
 			"sum": func(a, b int) int {
 				return a + b
 			},
@@ -88,7 +88,7 @@ func TestTemplateFile(t *testing.T) {
 		}
 		// test for data
 		{
-			ctx.TemplateFile("test_with_data", map[string]interface{}{"Apple": "100"})
+			ctx.TemplateFile("test_with_data", map[string]any{"Apple": "100"})
 			require.Equal(t, []byte(`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Title</title></head><body><h1>hello world</h1><h1>100</h1></body></html>`), ctx.Response.Data)
 			require.Equal(t, mime.HTML, ctx.Response.ContentType)
 		}
@@ -106,7 +106,7 @@ func TestTemplateFileReadFilePanic(t *testing.T) {
 	root, _ := os.Getwd()
 	tplDir, _ := filepath.Abs(filepath.Join(root, "testdata"))
 	ctx := New()
-	ctx.Allocate(buildReq(""), &config.Template{Root: tplDir, Suffix: ".html", FuncMap: map[string]interface{}{}})
+	ctx.Allocate(buildReq(""), &config.Template{Root: tplDir, Suffix: ".html", FuncMap: map[string]any{}})
 	ctx.TemplateFile("test-haha", nil)
 }
 
@@ -116,7 +116,7 @@ var tFS embed.FS
 func TestTemplateFS(t *testing.T) {
 	_testFunc := func() {
 		ctx := New()
-		ctx.Allocate(buildReq(""), &config.Template{Cache: true, Suffix: ".html", FuncMap: map[string]interface{}{}})
+		ctx.Allocate(buildReq(""), &config.Template{Cache: true, Suffix: ".html", FuncMap: map[string]any{}})
 		// test for no data
 		{
 			ctx.TemplateFS(&tFS, "testdata/test", nil)
@@ -125,7 +125,7 @@ func TestTemplateFS(t *testing.T) {
 		}
 		// test for data
 		{
-			ctx.TemplateFS(&tFS, "testdata/test_with_data", map[string]interface{}{"Apple": "100"})
+			ctx.TemplateFS(&tFS, "testdata/test_with_data", map[string]any{"Apple": "100"})
 			require.Equal(t, []byte(`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Title</title></head><body><h1>hello world</h1><h1>100</h1></body></html>`), ctx.Response.Data)
 			require.Equal(t, mime.HTML, ctx.Response.ContentType)
 		}
@@ -143,6 +143,6 @@ func TestTemplateFSReadFilePanic(t *testing.T) {
 	root, _ := os.Getwd()
 	tplDir, _ := filepath.Abs(filepath.Join(root, "testdata"))
 	ctx := New()
-	ctx.Allocate(buildReq(""), &config.Template{Root: tplDir, Suffix: ".html", FuncMap: map[string]interface{}{}})
+	ctx.Allocate(buildReq(""), &config.Template{Root: tplDir, Suffix: ".html", FuncMap: map[string]any{}})
 	ctx.TemplateFS(&tFS, "test-haha", nil)
 }

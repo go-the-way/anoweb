@@ -44,7 +44,7 @@ func TestTextFile(t *testing.T) {
 func TestJSON(t *testing.T) {
 	ctx := New()
 	ctx.Allocate(buildReq(""), nil)
-	ctx.JSON(map[string]interface{}{"apple": 100})
+	ctx.JSON(map[string]any{"apple": 100})
 	r := ctx.Response
 	require.Equal(t, []byte(`{"apple":100}`), r.Data)
 	require.Equal(t, mime.JSON, r.ContentType)
@@ -58,7 +58,7 @@ func TestJSONPanic(t *testing.T) {
 	}()
 	ctx := New()
 	ctx.Allocate(buildReq(""), nil)
-	ctx.JSON(map[string]interface{}{"_": func() {}})
+	ctx.JSON(map[string]any{"_": func() {}})
 }
 
 func TestJSONText(t *testing.T) {

@@ -19,7 +19,7 @@ import (
 )
 
 func TestSession(t *testing.T) {
-	s := &_session{"SESSION", time.Now(), map[string]interface{}{}}
+	s := &_session{"SESSION", time.Now(), map[string]any{}}
 
 	// test for Id
 	require.Equal(t, "SESSION", s.Id())
@@ -43,19 +43,19 @@ func TestSession(t *testing.T) {
 	require.Equal(t, nil, s.Get("banana"))
 
 	// test for GetAll
-	require.Equal(t, map[string]interface{}{}, s.GetAll())
+	require.Equal(t, map[string]any{}, s.GetAll())
 
 	// test for Set
 	s.Set("banana", "1")
 	require.Equal(t, "1", s.Get("banana"))
 
 	// test for SetAll with no flush
-	s.SetAll(map[string]interface{}{"orange": "2"}, false)
+	s.SetAll(map[string]any{"orange": "2"}, false)
 	require.Equal(t, "1", s.Get("banana"))
 	require.Equal(t, "2", s.Get("orange"))
 
 	// test for SetAll with flush
-	s.SetAll(map[string]interface{}{"orange": "2"}, true)
+	s.SetAll(map[string]any{"orange": "2"}, true)
 	require.Equal(t, nil, s.Get("banana"))
 	require.Equal(t, "2", s.Get("orange"))
 
@@ -72,7 +72,7 @@ func TestSession(t *testing.T) {
 type _session struct {
 	id       string
 	lifeTime time.Time
-	data     map[string]interface{}
+	data     map[string]any
 }
 
 func (s *_session) Id() string {
@@ -91,19 +91,19 @@ func (s *_session) Invalidated() bool {
 	return time.Now().After(s.lifeTime)
 }
 
-func (s *_session) Get(name string) interface{} {
+func (s *_session) Get(name string) any {
 	return s.data[name]
 }
 
-func (s *_session) GetAll() map[string]interface{} {
+func (s *_session) GetAll() map[string]any {
 	return s.data
 }
 
-func (s *_session) Set(name string, val interface{}) {
+func (s *_session) Set(name string, val any) {
 	s.data[name] = val
 }
 
-func (s *_session) SetAll(data map[string]interface{}, flush bool) {
+func (s *_session) SetAll(data map[string]any, flush bool) {
 	if flush {
 		s.data = data
 		return

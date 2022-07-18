@@ -53,9 +53,9 @@ func (u *upload) Handler() func(ctx *context.Context) {
 			Code int    `json:"code"`
 		}
 		type jdd struct {
-			Msg  string                 `json:"msg"`
-			Code int                    `json:"code"`
-			Data map[string]interface{} `json:"data"`
+			Msg  string         `json:"msg"`
+			Code int            `json:"code"`
+			Data map[string]any `json:"data"`
 		}
 		getJson := func(msg string, code int) *jd {
 			return &jd{
@@ -63,7 +63,7 @@ func (u *upload) Handler() func(ctx *context.Context) {
 				Code: code,
 			}
 		}
-		getJsonData := func(data map[string]interface{}) *jdd {
+		getJsonData := func(data map[string]any) *jdd {
 			return &jdd{
 				Msg:  "success",
 				Code: 0,
@@ -103,7 +103,7 @@ func (u *upload) Handler() func(ctx *context.Context) {
 			saveFiles = append(saveFiles, saveFilePath)
 		}
 
-		ctx.JSON(getJsonData(map[string]interface{}{
+		ctx.JSON(getJsonData(map[string]any{
 			"total": len(files),
 			"files": uploadFiles,
 		}))

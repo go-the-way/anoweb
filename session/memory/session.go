@@ -21,14 +21,14 @@ type session struct {
 	id          string
 	expiresTime time.Time
 	invalidated bool
-	attributes  map[string]interface{}
+	attributes  map[string]any
 }
 
 func newSession(id string, valid time.Duration) se.Session {
 	return &session{
 		id:          id,
 		expiresTime: time.Now().Add(valid),
-		attributes:  make(map[string]interface{}),
+		attributes:  make(map[string]any),
 	}
 }
 
@@ -52,11 +52,11 @@ func (s *session) Invalidated() bool {
 	return s.invalidated
 }
 
-func (s *session) GetAll() map[string]interface{} {
+func (s *session) GetAll() map[string]any {
 	return s.attributes
 }
 
-func (s *session) Get(name string) interface{} {
+func (s *session) Get(name string) any {
 	val, have := s.attributes[name]
 	if have {
 		return val
@@ -64,11 +64,11 @@ func (s *session) Get(name string) interface{} {
 	return nil
 }
 
-func (s *session) Set(name string, val interface{}) {
+func (s *session) Set(name string, val any) {
 	s.attributes[name] = val
 }
 
-func (s *session) SetAll(data map[string]interface{}, flush bool) {
+func (s *session) SetAll(data map[string]any, flush bool) {
 	if data == nil {
 		return
 	}

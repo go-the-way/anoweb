@@ -28,7 +28,7 @@ func TestSetData(t *testing.T) {
 func TestSetDataMap(t *testing.T) {
 	ctx := New()
 	ctx.Allocate(buildReq(""), &config.Template{})
-	ctx.SetDataMap(map[string]interface{}{"apple": 100, "orange": 200}, false)
+	ctx.SetDataMap(map[string]any{"apple": 100, "orange": 200}, false)
 	require.NotNil(t, ctx.dataMap["apple"])
 	require.Equal(t, ctx.dataMap["apple"], 100)
 	require.NotNil(t, ctx.dataMap["orange"])
@@ -39,7 +39,7 @@ func TestSetDataMapWithFlush(t *testing.T) {
 	ctx := New()
 	ctx.Allocate(buildReq(""), &config.Template{})
 	ctx.SetData("apple", 10)
-	ctx.SetDataMap(map[string]interface{}{"apple": 100, "orange": 200}, true)
+	ctx.SetDataMap(map[string]any{"apple": 100, "orange": 200}, true)
 	require.NotNil(t, ctx.dataMap["apple"])
 	require.Equal(t, ctx.dataMap["apple"], 100)
 	require.NotNil(t, ctx.dataMap["orange"])

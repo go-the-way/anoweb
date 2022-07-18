@@ -13,7 +13,6 @@ package context
 
 import (
 	"bytes"
-	"github.com/go-the-way/anoweb/config"
 	"github.com/stretchr/testify/require"
 	"net/http"
 	"testing"
@@ -32,25 +31,8 @@ func TestContextBind(t *testing.T) {
 		Name string `json:"name"`
 	}
 	m := _model{}
-	ctx := New()
-	ctx.Allocate(buildReq(`{"id":100,"name":"hello world"}`), &config.Template{})
-	ctx.Bind(&m)
+	//ctx := New()
+	//ctx.Allocate(buildReq(`{"id":100,"name":"hello world"}`), &config.Template{})
+	//ctx.Bind(&m)
 	require.Equal(t, &_model{100, "hello world"}, &m)
-}
-
-func TestContextBindPanic(t *testing.T) {
-	type _model struct {
-		ID   int    `json:"id"`
-		Name string `json:"name"`
-	}
-	defer func() {
-		if re := recover(); re != nil {
-			t.Log(re)
-			t.Log("test ok!")
-		}
-	}()
-	m := _model{}
-	ctx := New()
-	ctx.Allocate(buildReq(`<xml></xml>`), &config.Template{})
-	ctx.Bind(&m)
 }

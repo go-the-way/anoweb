@@ -27,7 +27,7 @@ import (
 type _session struct {
 	id       string
 	lifeTime time.Time
-	data     map[string]interface{}
+	data     map[string]any
 }
 
 func (s *_session) Id() string {
@@ -46,19 +46,19 @@ func (s *_session) Invalidated() bool {
 	return time.Now().After(s.lifeTime)
 }
 
-func (s *_session) Get(name string) interface{} {
+func (s *_session) Get(name string) any {
 	return s.data[name]
 }
 
-func (s *_session) GetAll() map[string]interface{} {
+func (s *_session) GetAll() map[string]any {
 	return s.data
 }
 
-func (s *_session) Set(name string, val interface{}) {
+func (s *_session) Set(name string, val any) {
 	s.data[name] = val
 }
 
-func (s *_session) SetAll(data map[string]interface{}, flush bool) {
+func (s *_session) SetAll(data map[string]any, flush bool) {
 	if flush {
 		s.data = data
 		return

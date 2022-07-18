@@ -13,14 +13,22 @@ package context
 
 import (
 	"encoding/json"
+	"encoding/xml"
+	"gopkg.in/yaml.v3"
 	"io/ioutil"
 )
 
-// Bind struct ptr
-func (ctx *Context) Bind(structPtr interface{}) {
+func (ctx *Context) BindJSON(ptr any) error {
 	readAll, _ := ioutil.ReadAll(ctx.Request.Body)
-	err := json.Unmarshal(readAll, structPtr)
-	if err != nil {
-		panic(err)
-	}
+	return json.Unmarshal(readAll, ptr)
+}
+
+func (ctx *Context) BindXML(ptr any) error {
+	readAll, _ := ioutil.ReadAll(ctx.Request.Body)
+	return xml.Unmarshal(readAll, ptr)
+}
+
+func (ctx *Context) BindYAML(ptr any) error {
+	readAll, _ := ioutil.ReadAll(ctx.Request.Body)
+	return yaml.Unmarshal(readAll, ptr)
 }
